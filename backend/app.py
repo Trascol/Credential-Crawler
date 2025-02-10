@@ -47,7 +47,7 @@ def login():
         user = cur.fetchone()
 
     if user and bcrypt.check_password_hash(user[1], password):
-        access_token = create_access_token(identity=user[0])
+        access_token = create_access_token(identity=str(user[0]))
         return jsonify({"token": access_token}), 200
     return jsonify({"error": "Invalid credentials"}), 401
 
