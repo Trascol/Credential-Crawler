@@ -2387,7 +2387,7 @@ button.alt:active,
   overflow: hidden;
   border-top: solid 2px #e5e5e5;
   background: #f0f0f0;
-  padding: 6em 0 8em 0;
+  padding: 0em 0 6em 0;
   text-align: center;
 }
 
@@ -2900,4 +2900,16 @@ button.alt:active,
     margin-left: 0;
     border-left: 0;
   }
+}
+
+.login-link{
+  position: absolute;
+  top: 10px;
+  right: 100px;
+}
+
+.register-link{
+  position: absolute;
+  top: 10px;
+  right: 20px;
 }
