@@ -10,7 +10,7 @@ CORS(app)  # Allow cross-origin requests
 bcrypt = Bcrypt(app)
 
 # JWT Secret Key
-app.config["JWT_SECRET_KEY"] = "supersecretkey"  # Change this in production!
+app.config["JWT_SECRET_KEY"] = "supersecretkey" 
 jwt = JWTManager(app)
 
 # Database connection
