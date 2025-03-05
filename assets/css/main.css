@@ -426,6 +426,79 @@ br.clear {
   }
 }
 
+/* Row */
+.jobseekerupload-container {
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.jobseekerupload-left {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 15px;
+}
+
+.jobseekerupload-left-title h2 {
+  font-weight: 600;
+  color: #ed786a;
+  font-size: 40px;
+  margin-bottom: 5px;
+}
+
+.jobseekerupload-inputs {
+  width: 400px;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding-left: 25px;
+  font-weight: 500;
+  color: #666;
+  border-radius: 50px;
+}
+
+.jobseekerupload-inputs:focus {
+  border: 2px solid#ff994f;
+}
+
+.jobseekerupload-inputs::placeholder {
+  color: #a9a9a9;
+}
+
+.jobseekerupload-left button {
+  display: flex;
+  align-items: center;
+  padding: 15px 30px;
+  font-size: 16px;
+  color: #fff;
+  gap: 10px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(270deg, #ff994f, #fa6d86);
+  cursor: pointer;
+}
+
+.jobseekerupload-left button img {
+  height: 15px;
+}
+
+.jobseekerupload-right img {
+  width: 500px;
+}
+
+@media (max-width: 800px) {
+  .jobseekerupload-inputs {
+    width: 80vw;
+  }
+  .jobseekerupload-right {
+    display: none;
+  }
+}
+
+
+
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -2913,3 +2986,4 @@ button.alt:active,
   top: 10px;
   right: 20px;
 }
+
