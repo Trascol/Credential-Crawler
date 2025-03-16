@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Jobseekers</title>
+		<title>Employers</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -30,7 +30,7 @@
         				method="POST"
         				class="jobseekerupload-left">
         			<div class="jobseekerupload-left-title">
-          				<h2>Upload Your Resume</h2>
+          				<h2>Upload Resumes to Scan</h2>
         			</div>
         			<input
           				type="hidden"
@@ -38,17 +38,17 @@
           				value="ae51f3ae-3abf-4701-90e1-3f731ccdf36f"/>
         			<input
           				type="text"
-          				name="jobtitle"
-          				placeholder="Your current job title"
+          				name="jobtitlesearch"
+          				placeholder="Job Title You're Scanning For"
           				class="jobseekerupload-inputs"
           				required/>
                     <input
           				type="text"
-          				name="currentemployer"
-          				placeholder="Your current employer"
+          				name="companyname"
+          				placeholder="Company Name"
           				class="jobseekerupload-inputs"
           				required/>
-					<textarea name="skills" placeholder="Skills you use in current position (separated by commas)" class="jobseekerupload-inputs" required></textarea>
+					<textarea name="keyword_search" placeholder="Enter keywords to search (separated by commas)" class="jobseekerupload-inputs" required></textarea>
                     <label for="myfile">Select a file:</label>
                     <input type="file" id="myfile" name="myfile" accept=".doc,.docx,.pdf,.txt" required>
         			<button type="submit">
