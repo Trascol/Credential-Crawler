@@ -208,7 +208,7 @@ h5,
 h6 {
   font-weight: 600;
   text-transform: uppercase;
-  color: #888;
+  color: #fff;
 }
 
 h1 a,
@@ -258,18 +258,18 @@ a strong {
 }
 
 a:hover {
-  color: #ed786a;
+  color: #00ed64;
   border-bottom-color: rgba(255, 255, 255, 0);
 }
 
 a:hover strong {
-  color: #ed786a;
+  color: #00ed64;
 }
 
 strong,
 b {
   font-weight: 600;
-  color: #666;
+  color: #fff;
 }
 
 em,
@@ -2241,7 +2241,7 @@ button.alt:active,
 }
 
 #header > .container {
-  padding: 7em 0 0 0;
+  padding: 10em 0 1em 0;
   border-bottom: solid 2px #001e2b;
   box-shadow: inset 0px -8px 0px 0px #001e2b, inset 0px -10px 0px 0px #001e2b;
 }
@@ -2249,7 +2249,7 @@ button.alt:active,
 #header h1 {
   font-family: "Arvo";
   font-weight: 700;
-  color: #ed786a;
+  color: #00ed64;
   text-shadow: 0.05em 0.075em 0 rgba(0, 0, 0, 0.1);
   font-size: 3em;
   letter-spacing: 13px;
@@ -2262,7 +2262,7 @@ button.alt:active,
 #header p {
   text-transform: uppercase;
   font-weight: 400;
-  color: #888;
+  color: #fff;
   margin: 2.5em 0 0 0;
   font-size: 0.85em;
   letter-spacing: 3px;
@@ -2427,6 +2427,7 @@ button.alt:active,
   overflow: hidden;
   background: #001e2b;
   padding: 6em 0;
+  color: #fff;
 }
 
 /* Content */
@@ -2457,22 +2458,6 @@ button.alt:active,
   padding: 0em 0 8em 0;
   text-align: center;
 }
-
-/* #footer form input[type="text"],
-#footer form input[type="email"],
-#footer form input[type="password"],
-#footer form select,
-#footer form textarea {
-  background: #001e2b;
-}
-
-#footer form input[type="text"]:focus,
-#footer form input[type="email"]:focus,
-#footer form input[type="password"]:focus,
-#footer form select:focus,
-#footer form textarea:focus {
-  background: #001e2b;
-} */
 
 #footer h2 {
   text-align: center;
@@ -2604,7 +2589,7 @@ button.alt:active,
   /* Header */
 
   #header > .container {
-    padding: 10em 0 7em 0;
+    padding: 10em 0 10em 0;
   }
 
   /* Nav */
