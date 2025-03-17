@@ -428,7 +428,7 @@ br.clear {
 
 /* Row */
 .jobseekerupload-container {
-  height: 40vh;
+  height: 60vh;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -504,7 +504,83 @@ br.clear {
   }
 }
 
+/* Row */
+.employerupload-container {
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
 
+.employerupload-left {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 15px;
+}
+
+.employerupload-left-title h2 {
+  font-weight: 600;
+  color: #ed786a;
+  font-size: 40px;
+  margin-bottom: 5px;
+}
+
+.employerupload-inputs {
+  width: 700px;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding-left: 25px;
+  font-weight: 500;
+  color: #666;
+  border-radius: 00px;
+}
+
+.employerupload-inputs textarea {
+  height: 140px;
+  padding-top: 15px;
+  border-radius: 0px;
+  resize: none;
+}
+
+.employerupload-inputs:focus {
+  border: 2px solid#ff994f;
+}
+
+.employerupload-inputs::placeholder {
+  color: #a9a9a9;
+}
+
+.employerupload-left button {
+  display: flex;
+  align-items: center;
+  padding: 15px 30px;
+  font-size: 16px;
+  color: #fff;
+  gap: 10px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(270deg, #ff994f, #fa6d86);
+  cursor: pointer;
+}
+
+.employerupload-left button img {
+  height: 15px;
+}
+
+.employerupload-right img {
+  width: 500px;
+}
+
+@media (max-width: 800px) {
+  .employerupload-inputs {
+    width: 80vw;
+  }
+  .employerupload-right {
+    display: none;
+  }
+}
 
 .row {
   display: flex;
