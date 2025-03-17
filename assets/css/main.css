@@ -208,7 +208,7 @@ h5,
 h6 {
   font-weight: 600;
   text-transform: uppercase;
-  color: #888;
+  color: #fff;
 }
 
 h1 a,
@@ -258,18 +258,18 @@ a strong {
 }
 
 a:hover {
-  color: #ed786a;
+  color: #00ed64;
   border-bottom-color: rgba(255, 255, 255, 0);
 }
 
 a:hover strong {
-  color: #ed786a;
+  color: #00ed64;
 }
 
 strong,
 b {
   font-weight: 600;
-  color: #666;
+  color: #fff;
 }
 
 em,
@@ -366,7 +366,7 @@ br.clear {
 
 .contact-left-title h2 {
   font-weight: 600;
-  color: #ed786a;
+  color: #00ed64;
   font-size: 40px;
   margin-bottom: 5px;
 }
@@ -389,7 +389,7 @@ br.clear {
 }
 
 .contact-inputs:focus {
-  border: 2px solid#ff994f;
+  border: 2px solid#00ed64;
 }
 
 .contact-inputs::placeholder {
@@ -422,6 +422,162 @@ br.clear {
     width: 80vw;
   }
   .contact-right {
+    display: none;
+  }
+}
+
+/* Row */
+.jobseekerupload-container {
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.jobseekerupload-left {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 15px;
+}
+
+.jobseekerupload-left-title h2 {
+  font-weight: 600;
+  color: #00ed64;
+  font-size: 40px;
+  margin-bottom: 5px;
+}
+
+.jobseekerupload-inputs {
+  width: 700px;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding-left: 25px;
+  font-weight: 500;
+  color: #00684a;
+  border-radius: 10px 10px 10px 10px;
+}
+
+.jobseekerupload-inputs textarea {
+  height: 140px;
+  padding-top: 15px;
+  border-radius: 0px;
+  resize: none;
+}
+
+.jobseekerupload-inputs:focus {
+  border: 2px solid#00ed64;
+}
+
+.jobseekerupload-inputs::placeholder {
+  color: #00684a;
+}
+
+.jobseekerupload-left button {
+  display: flex;
+  align-items: center;
+  padding: 15px 30px;
+  font-size: 16px;
+  color: #fff;
+  gap: 10px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(270deg, #00684a, #00ed64);
+  cursor: pointer;
+}
+
+.jobseekerupload-left button img {
+  height: 15px;
+}
+
+.jobseekerupload-right img {
+  width: 500px;
+}
+
+@media (max-width: 800px) {
+  .jobseekerupload-inputs {
+    width: 80vw;
+  }
+  .jobseekerupload-right {
+    display: none;
+  }
+}
+
+/* Row */
+.employerupload-container {
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.employerupload-left {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 15px;
+}
+
+.employerupload-left-title h2 {
+  font-weight: 600;
+  color: #00ed64;
+  font-size: 40px;
+  margin-bottom: 5px;
+}
+
+.employerupload-inputs {
+  width: 700px;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding-left: 25px;
+  font-weight: 500;
+  color: #666;
+  border-radius: 00px;
+}
+
+.employerupload-inputs textarea {
+  height: 140px;
+  padding-top: 15px;
+  border-radius: 0px;
+  resize: none;
+}
+
+.employerupload-inputs:focus {
+  border: 2px solid#00ed64;
+}
+
+.employerupload-inputs::placeholder {
+  color: #a9a9a9;
+}
+
+.employerupload-left button {
+  display: flex;
+  align-items: center;
+  padding: 15px 30px;
+  font-size: 16px;
+  color: #fff;
+  gap: 10px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(270deg, #00684a, #00ed64);
+  cursor: pointer;
+}
+
+.employerupload-left button img {
+  height: 15px;
+}
+
+.employerupload-right img {
+  width: 500px;
+}
+
+@media (max-width: 800px) {
+  .employerupload-inputs {
+    width: 80vw;
+  }
+  .employerupload-right {
     display: none;
   }
 }
@@ -1740,7 +1896,7 @@ ul.links {
 
 ul.links li {
   display: inline;
-  border-left: solid 1px #d0d0d0;
+  border-left: solid 1px #001e2b;
   padding-left: 1em;
   margin: 0 0 0 1em;
 }
@@ -1832,7 +1988,7 @@ ul.icons > li:first-child:before {
 form label {
   font-weight: 600;
   text-transform: uppercase;
-  color: #888;
+  color: #00ed64;
   display: block;
   margin: 0 0 1em 0;
 }
@@ -1852,9 +2008,10 @@ form textarea {
   background: #e8e8e8;
   width: 100%;
   box-shadow: inset 2px 2px 0px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  /* border-radius: 4px; */
   line-height: 1.25em;
   padding: 0.75em 1em 0.75em 1em;
+  resize: none;
 }
 
 form input[type="text"]:focus,
@@ -1975,7 +2132,7 @@ input[type="submit"]:hover,
 input[type="reset"]:hover,
 button:hover,
 .button:hover {
-  background: #fd887a;
+  background: #00ed64;
 }
 
 input[type="button"]:active,
@@ -2079,20 +2236,20 @@ button.alt:active,
 #header {
   position: relative;
   position: relative;
-  background: #fff;
+  background: #001e2b;
   text-align: center;
 }
 
 #header > .container {
-  padding: 14em 0 7em 0;
-  border-bottom: solid 2px #e5e5e5;
-  box-shadow: inset 0px -8px 0px 0px #fff, inset 0px -10px 0px 0px #e5e5e5;
+  padding: 10em 0 1em 0;
+  border-bottom: solid 2px #001e2b;
+  box-shadow: inset 0px -8px 0px 0px #001e2b, inset 0px -10px 0px 0px #001e2b;
 }
 
 #header h1 {
   font-family: "Arvo";
   font-weight: 700;
-  color: #ed786a;
+  color: #00ed64;
   text-shadow: 0.05em 0.075em 0 rgba(0, 0, 0, 0.1);
   font-size: 3em;
   letter-spacing: 13px;
@@ -2105,7 +2262,7 @@ button.alt:active,
 #header p {
   text-transform: uppercase;
   font-weight: 400;
-  color: #888;
+  color: #fff;
   margin: 2.5em 0 0 0;
   font-size: 0.85em;
   letter-spacing: 3px;
@@ -2176,85 +2333,13 @@ button.alt:active,
 
 #nav > ul > li.active > a:before,
 #nav > ul > li:hover > a:before {
-  background: #ed786a;
+  background: #00ed64;
   color: #fff;
 }
 
 #nav > ul > li.active > a > span,
 #nav > ul > li:hover > a > span {
-  color: #ed786a;
-}
-
-.dropotron {
-  text-align: left;
-  border: solid 1px #e5e5e5;
-  border-radius: 4px;
-  background: #fff;
-  background: rgba(255, 255, 255, 0.965);
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
-  padding: 0.75em 0 0.5em 0;
-  min-width: 12em;
-  margin-top: calc(-0.5em + 1px);
-  margin-left: -2px;
-  list-style: none;
-}
-
-.dropotron.level-0 {
-  margin-top: 1.5em;
-  margin-left: -1em;
-}
-
-.dropotron.level-0:after {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 1.25em;
-  top: calc(-0.75em + 1px);
-  border-left: solid 0.75em rgba(255, 255, 255, 0);
-  border-right: solid 0.75em rgba(255, 255, 255, 0);
-  border-bottom: solid 0.75em #fff;
-}
-
-.dropotron.level-0:before {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 1.25em;
-  top: -0.75em;
-  border-left: solid 0.75em rgba(255, 255, 255, 0);
-  border-right: solid 0.75em rgba(255, 255, 255, 0);
-  border-bottom: solid 0.75em #ccc;
-}
-
-.dropotron span,
-.dropotron a {
-  display: block;
-  padding: 0.3em 1em 0.3em 1em;
-  border: 0;
-  border-top: solid 1px #f0f0f0;
-  outline: 0;
-}
-
-.dropotron li {
-  padding-left: 0;
-  margin: 0;
-}
-
-.dropotron li:first-child > span,
-.dropotron li:first-child > a {
-  border-top: 0;
-  padding-top: 0;
-}
-
-.dropotron li:hover > span,
-.dropotron li:hover > a {
-  -moz-transition: color 0.25s ease-in-out,
-    border-bottom-color 0.25s ease-in-out;
-  -webkit-transition: color 0.25s ease-in-out,
-    border-bottom-color 0.25s ease-in-out;
-  -ms-transition: color 0.25s ease-in-out, border-bottom-color 0.25s ease-in-out;
-  transition: color 0.25s ease-in-out, border-bottom-color 0.25s ease-in-out;
-  color: #ed786a;
+  color: #00ed64;
 }
 
 /* Features */
@@ -2340,8 +2425,9 @@ button.alt:active,
 #main {
   position: relative;
   overflow: hidden;
-  background: #fff;
+  background: #001e2b;
   padding: 6em 0;
+  color: #fff;
 }
 
 /* Content */
@@ -2362,49 +2448,15 @@ button.alt:active,
   padding: 0;
 }
 
-/* Sidebar */
-
-#sidebar > section,
-#sidebar > article {
-  border-top: solid 2px #e5e5e5;
-  box-shadow: inset 0px 8px 0px 0px #fff, inset 0px 10px 0px 0px #e5e5e5;
-  margin: 5em 0 0 0;
-  padding: 5em 0 0 0;
-}
-
-#sidebar > section:first-child,
-#sidebar > article:first-child {
-  border-top: 0;
-  box-shadow: none;
-  margin: 0;
-  padding: 0;
-}
-
 /* Footer */
 
 #footer {
   position: relative;
   overflow: hidden;
-  border-top: solid 2px #e5e5e5;
-  background: #f0f0f0;
-  padding: 0em 0 6em 0;
+  border-top: solid 2px #001e2b;
+  background: #001e2b;
+  padding: 0em 0 8em 0;
   text-align: center;
-}
-
-#footer form input[type="text"],
-#footer form input[type="email"],
-#footer form input[type="password"],
-#footer form select,
-#footer form textarea {
-  background: #f7f7f7;
-}
-
-#footer form input[type="text"]:focus,
-#footer form input[type="email"]:focus,
-#footer form input[type="password"]:focus,
-#footer form select:focus,
-#footer form textarea:focus {
-  background: #fff;
 }
 
 #footer h2 {
@@ -2414,7 +2466,7 @@ button.alt:active,
 /* Copyright */
 
 #copyright {
-  border-top: solid 2px #e5e5e5;
+  border-top: solid 2px #001e2b;
   text-align: center;
   margin-top: 6em;
   padding-top: 4em;
@@ -2537,7 +2589,7 @@ button.alt:active,
   /* Header */
 
   #header > .container {
-    padding: 10em 0 7em 0;
+    padding: 10em 0 10em 0;
   }
 
   /* Nav */
@@ -2671,7 +2723,7 @@ button.alt:active,
 
   #navPanel .link.depth-0 {
     font-weight: 600;
-    color: #fff;
+    color: #001e2b;
   }
 
   #navPanel .indent-1 {
@@ -2700,7 +2752,7 @@ button.alt:active,
   }
 
   #navPanel .depth-0 {
-    color: #fff;
+    color: #001e2b;
   }
 
   body.navPanel-visible #page-wrapper {
@@ -2905,11 +2957,24 @@ button.alt:active,
 .login-link{
   position: absolute;
   top: 10px;
-  right: 100px;
+  right: 110px;
+  color: #fff;
+  font-size: 25px;
+}
+
+.login-link:hover {
+  color: #00ed64; 
 }
 
 .register-link{
   position: absolute;
   top: 10px;
   right: 20px;
+  color: #fff;
+  font-size: 25px;
 }
+
+.register-link:hover {
+  color: #00ed64;
+}
+
