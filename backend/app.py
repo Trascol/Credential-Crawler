@@ -43,12 +43,14 @@ def login():
     password = data["password"]
 
     with conn.cursor() as cur:
-        cur.execute("SELECT id, password_hash FROM users WHERE email = %s", (email,))
+        # Fetch both id and full_name
+        cur.execute("SELECT id, password_hash, full_name FROM users WHERE email = %s", (email,))
         user = cur.fetchone()
 
     if user and bcrypt.check_password_hash(user[1], password):
         access_token = create_access_token(identity=str(user[0]))
-        return jsonify({"token": access_token}), 200
+        return jsonify({"token": access_token, "name": user[2]}), 200
+
     return jsonify({"error": "Invalid credentials"}), 401
 
 @app.route("/protected", methods=["GET"])
