@@ -2978,3 +2978,7 @@ button.alt:active,
   color: #00ed64;
 }
 
+.logged_in{
+  font-size: 30px;
+  color: #fff;
+}
