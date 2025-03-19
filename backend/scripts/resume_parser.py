@@ -1,6 +1,4 @@
-# NOTE
-# Handles PDFs, txt, and DOCX files resume files, this script will try to parse and populate areas for user in DB.
-# Uses regxx
+"""This script is used to parse through a users resume to retrieve name, contact information, and skills found on resume."""
 
 # pip install pdfminer.six python-docx spacy nltk
 # python -m spacy download en_core_web_sm
@@ -8,9 +6,10 @@
 import re
 import spacy
 from pdfminer.high_level import extract_text
+from skill_analysis import find_field, extract_skills
 from docx import Document
 
-nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_sm") # Web assuming
 
 def extract_text_from_pdf(pdf_path):
     return extract_text(pdf_path)
@@ -35,15 +34,6 @@ def extract_name(text):
             return ent.text
     return None
 
-def extract_skills(text): # Returns a list of all skills found based on previously added skills in DB
-    # DO A DB FETCH INTO DATA BASE TO LOOK FOR SKILLS HERE
-    skills_db = {"Python", "Java", "C++", "SQL", "Machine Learning", "AI", "Django", "Flask", "Deep Learning"}
-    
-    # Use regex to ensure standalone words/phrases match
-    found_skills = {skill for skill in skills_db if re.search(rf'\b{re.escape(skill)}\b', text, re.IGNORECASE)}
-    
-    return list(found_skills)
-
 def parse_resume(file_path, file_type="pdf"):
     if file_type == "pdf":
         text = extract_text_from_pdf(file_path)
@@ -60,24 +50,22 @@ def parse_resume(file_path, file_type="pdf"):
     
     return parsed_data
 
-def field_assumptions(skills): # This function is where we can potentially just classifying fields.
-    # This is important because maybe based on best_field we can design a new resume for them.
-    
-    tech_fields = {
-        "Software Engineering": {"Python", "Java", "C++", "C#", "Git"},
-        "Data Science": {"Python", "SQL", "Machine Learning", "Pandas"},
-        "Web Development": {"JavaScript", "HTML", "CSS", "React"},
-        "Cybersecurity": {"Networking", "Linux", "Penetration Testing", "Cryptography"}
-    }
-
-    field_counts = {field: len(skills.intersection(skill_set)) for field, skill_set in tech_fields.items()}
-
-    best_field = max(field_counts, key=field_counts.get)
-    
-    return best_field if field_counts[best_field] > 0 else "Unknown Field"
-
 if __name__ == "__main__":
 
     file_path = "resume.pdf"  # Get users pdf and locally store it maybe? Then delete the actual pdf after its parsed
     resume_data = parse_resume(file_path, file_type="pdf") # I wanna stick with pdf
-    print(resume_data)
+    
+    user_name = resume_data.get("name")
+    user_email = resume_data.get("contact_info", {}).get("email", [])
+    user_phone = resume_data.get("contact_info", {}).get("phone", [])
+    user_skills = resume_data.get("skills")
+    
+    print("\n")
+    print(f"Name: {user_name}")
+    print(f"Email: {user_email}")
+    print(f"Phone number: {user_phone}")
+    print(f"Skills: {user_skills}")
+    
+    assumed_field = find_field(user_skills)
+    
+    print(f"\nMost likely field: {assumed_field}")
