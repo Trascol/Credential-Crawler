@@ -13,15 +13,15 @@ bcrypt = Bcrypt(app)
 app.config["JWT_SECRET_KEY"] = "supersecretkey" 
 jwt = JWTManager(app)
 
+# Database connection
+conn = None
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://crawlers:bpz181nyvAckbsUJZ4bq4Vt9q1QYm3IQ@dpg-cul6445ds78s73f5i3jg-a.oregon-postgres.render.com/resume_proj_db")
 def get_connection():
     global conn
     if not conn or conn.closed:
-        conn = psycopg2.connect(...)
+        conn = psycopg2.connect(DATABASE_URL)
     return conn
-
-# Database connection
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://crawlers:bpz181nyvAckbsUJZ4bq4Vt9q1QYm3IQ@dpg-cul6445ds78s73f5i3jg-a.oregon-postgres.render.com/resume_proj_db")
-conn = get_connection
+get_connection()
 
 @app.route("/register", methods=["POST"])
 def register():
