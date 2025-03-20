@@ -10,6 +10,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<script src="assets/js/loginFunc.js" defer></script>
 	</head>
 	<body class="no-sidebar is-preload">
 		<div id="page-wrapper">
@@ -19,9 +20,10 @@
 				<div class="container">
 
 					<!-- Logo -->
-						<a href="login.html" class="login-link">Login</a>
-						<a href="register.html" class="register-link">Register</a>
-
+					<div class="logged_in">
+						<span id="user-name"></span>
+						<a href="#" id="logout-btn">Logout</a>
+					</div>
                         <!-- Main -->
 				<section id="main">
 					<div class="jobseekerupload-container">
@@ -73,10 +75,9 @@
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
-								<li><a class="icon solid fa-home" style="color: #fff" href="index.html"><span>Homepage</span></a></li>
-								<li><a class="icon solid fa-user-tie" style="color: #fff" href="jobseekers.html"><span>Jobseekers</span></a></li>
-								<li><a class="icon solid fa-building" style="color: #fff" href="employers.html"><span>Employers</span></a></li>
-								<li><a class="icon solid fa-question" style="color: #fff" href="faq.html"><span>FAQ</span></a></li>
+								<li><a class="icon solid fa-home" style="color: #fff" href="index.html"><span>Home</span></a></li>
+								<li><a class="icon solid fa-user-tie" style="color: #fff" href="jobseekerupload.html"><span>Jobseeker Upload</span></a></li>
+								<li><a class="icon solid fa-building" style="color: #fff" href="employerupload.html"><span>Employers Upload</span></a></li>
 								<li><a class="icon solid fa-envelope" style="color: #fff" href="contact.html"><span>Contact Us</span></a></li>
 							</ul>
 						</nav>
@@ -92,10 +93,9 @@
 				<!-- Nav -->
 				<nav id="nav">
 					<ul>
-						<li><a class="icon solid fa-home" style="color: #fff" href="index.html"><span>Homepage</span></a></li>
-						<li><a class="icon solid fa-user-tie" style="color: #fff" href="jobseekers.html"><span>Jobseekers</span></a></li>
-						<li><a class="icon solid fa-building" style="color: #fff" href="employers.html"><span>Employers</span></a></li>
-						<li><a class="icon solid fa-question" style="color: #fff" href="faq.html"><span>FAQ</span></a></li>
+						<li><a class="icon solid fa-home" style="color: #fff" href="index.html"><span>Home</span></a></li>
+						<li><a class="icon solid fa-user-tie" style="color: #fff" href="jobseekerupload.html"><span>Jobseeker Upload</span></a></li>
+						<li><a class="icon solid fa-building" style="color: #fff" href="employerupload.html"><span>Employers Upload</span></a></li>
 						<li><a class="icon solid fa-envelope" style="color: #fff" href="contact.html"><span>Contact Us</span></a></li>
 					</ul>
 				</nav>

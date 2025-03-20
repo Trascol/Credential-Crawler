@@ -13,17 +13,17 @@ $(document).ready(function () {
 
         if (user && user.name) {
           userNameDisplay.text(`Welcome, ${user.name}`);
-          //  userNameDisplay.show();
-          //  logoutBtn.show();
-          //  loginLink.hide();
-          //  registerLink.hide();
+          userNameDisplay.show();
+          logoutBtn.show();
+          loginLink.hide();
+          registerLink.hide();
           guestUser.hide();
           verifiedUser.show();
         } else {
-          //  userNameDisplay.hide();
-          //  logoutBtn.hide();
-          //  loginLink.show();
-          //  registerLink.show();
+          userNameDisplay.hide();
+          logoutBtn.hide();
+          loginLink.show();
+          registerLink.show();
           guestUser.show();
           verifiedUser.hide();
         }
