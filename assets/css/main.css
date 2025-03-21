@@ -405,7 +405,7 @@ br.clear {
   gap: 10px;
   border: none;
   border-radius: 50px;
-  background: linear-gradient(270deg, #ff994f, #fa6d86);
+  background: linear-gradient(270deg, #00684a, #00ed64);
   cursor: pointer;
 }
 
@@ -581,6 +581,86 @@ br.clear {
     display: none;
   }
 }
+
+/* Row */
+.employerjobposting-container {
+  /* height: 40vh; */
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.employerjobposting-left {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 15px;
+}
+
+.employerjobposting-left-title h2 {
+  font-weight: 600;
+  color: #00ed64;
+  font-size: 40px;
+  margin-bottom: 5px;
+}
+
+.employerjobposting-inputs {
+  width: 700px;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding-left: 25px;
+  font-weight: 500;
+  color: #666;
+  border-radius: 00px;
+}
+
+.employerjobposting-inputs textarea {
+  height: 140px;
+  padding-top: 15px;
+  border-radius: 0px;
+  resize: none;
+}
+
+.employerjobposting-inputs:focus {
+  border: 2px solid#00ed64;
+}
+
+.employerjobposting-inputs::placeholder {
+  color: #a9a9a9;
+}
+
+.employerjobposting-left button {
+  display: flex;
+  align-items: center;
+  padding: 15px 30px;
+  font-size: 16px;
+  color: #fff;
+  gap: 10px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(270deg, #00684a, #00ed64);
+  cursor: pointer;
+}
+
+.employerjobposting-left button img {
+  height: 15px;
+}
+
+.employerjobposting-right img {
+  width: 500px;
+}
+
+@media (max-width: 800px) {
+  .employerupload-inputs {
+    width: 80vw;
+  }
+  .employerjobposting-right {
+    display: none;
+  }
+}
+
+
 
 .row {
   display: flex;
