@@ -12,6 +12,42 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<script src="assets/js/loginFunc.js" defer></script>
 	</head>
+
+	<div id="fieldModal" class="modal" style="display:none;">
+		<div class="modal-content" style="background:white;padding:20px;border-radius:10px;max-width:400px;margin:auto;">
+		  <h3>Add a New Field</h3>
+		  <input type="text" id="newFieldInput" placeholder="e.g., Blockchain Developer" />
+		  
+		  	<label for="fieldSkillSelect">Select skills for this field:</label>
+			<select id="fieldSkillSelect" multiple style="width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 10px;">
+			<!-- Options will be loaded dynamically -->
+			</select>
+
+	  
+		  <div style="margin-top:10px;">
+			<button id="confirmAddField">Add</button>
+			<button id="cancelAddField">Cancel</button>
+		  </div>
+		  <p id="fieldStatus"></p>
+		</div>
+	  </div>
+	  
+	  
+	  <style>
+	  .modal {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0,0,0,0.5);
+		z-index: 1000;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	  }
+	  </style>
+
 	<body class="no-sidebar is-preload">
 		<div id="page-wrapper">
 
@@ -32,38 +68,18 @@
         				method="POST"
         				class="jobseekerupload-left">
         			<div class="jobseekerupload-left-title">
-          				<h2>Upload Your Resume</h2>
+          				<h2>Upload And Check Your Resume</h2>
         			</div>
         			<input
           				type="hidden"
           				name="access_key"
           				value="ae51f3ae-3abf-4701-90e1-3f731ccdf36f"/>
-					<input
-          				type="text"
-          				name="jobapply_title"
-          				placeholder="Job title you're applying for"
-          				class="jobseekerupload-inputs"
-          				required/>
-					<input
-          				type="text"
-          				name="jobapply_company"
-          				placeholder="Company you're applying for"
-          				class="jobseekerupload-inputs"
-          				required/>
-        			<input
-          				type="text"
-          				name="jobtitle"
-          				placeholder="Your current job title"
-          				class="jobseekerupload-inputs"
-          				required/>
-                    <input
-          				type="text"
-          				name="currentemployer"
-          				placeholder="Your current employer"
-          				class="jobseekerupload-inputs"
-          				required/>
-					<textarea name="skills" placeholder="Skills you use in current position (separated by commas)" class="jobseekerupload-inputs" required></textarea>
-                    <label for="myfile">Select a file:</label>
+                    <label for="field_id">What field are you interested in?</label>
+					<select id="field_id" name="field_id" required>
+					</select>
+					<button type="button" id="addFieldBtn">+ Add New Field</button>
+
+					<label for="myfile">Select a file:</label>
                     <input type="file" id="myfile" name="myfile" accept=".pdf" required>
         			<button type="submit">
           				Submit <img src="./assets/css/images/arrow_icon.png" alt="" />
@@ -112,6 +128,109 @@
 	</div>
 
 		<!-- Scripts -->
+
+		<script>
+
+			async function loadSkills() {
+				const skillSelect = document.getElementById("fieldSkillSelect");
+				skillSelect.innerHTML = "";
+			  
+				try {
+				  const res = await fetch("http://localhost:5000/get-skills");
+				  const skills = await res.json();
+			  
+				  skills.forEach(skill => {
+					const option = document.createElement("option");
+					option.value = skill.name;
+					option.textContent = skill.name;
+					skillSelect.appendChild(option);
+				  });
+				} catch (err) {
+				  console.error("Failed to load skills:", err);
+				}
+			  }
+			
+			async function loadFields() {
+				const fieldSelect = document.getElementById("field_id");
+				fieldSelect.innerHTML = ""; // Clear old options
+			  
+				try {
+				  console.log("Fetching fields...");
+				  const res = await fetch("http://localhost:5000/get-fields"); // Make sure this matches your Flask port
+				  const fields = await res.json();
+				  console.log("Fields received:", fields);
+			  
+				  fields.forEach(field => {
+					const option = document.createElement("option");
+					option.value = field.id;
+					option.textContent = field.name;
+					fieldSelect.appendChild(option);
+				  });
+			  
+				  console.log("Dropdown populated.");
+				} catch (err) {
+				  console.error("Failed to load fields:", err);
+				}
+			  }
+			
+			document.addEventListener("DOMContentLoaded", loadFields);
+			
+			// Add new field modal logic
+			const modal = document.getElementById("fieldModal");
+			const addFieldBtn = document.getElementById("addFieldBtn");
+			const confirmBtn = document.getElementById("confirmAddField");
+			const cancelBtn = document.getElementById("cancelAddField");
+			const newFieldInput = document.getElementById("newFieldInput");
+			const fieldStatus = document.getElementById("fieldStatus");
+			
+			addFieldBtn.addEventListener("click", () => {
+			  modal.style.display = "flex";
+			  newFieldInput.value = "";
+			  fieldStatus.textContent = "";
+			  loadSkills();
+			});
+			
+			cancelBtn.addEventListener("click", () => {
+			  modal.style.display = "none";
+			});
+			
+			confirmBtn.addEventListener("click", async () => {
+				const name = newFieldInput.value.trim();
+			  
+				// Get selected skills
+				const selectedOptions = Array.from(document.getElementById("fieldSkillSelect").selectedOptions);
+				const skillNames = selectedOptions.map(opt => opt.value);
+			  
+				if (!name) {
+				  fieldStatus.textContent = "Please enter a field name.";
+				  return;
+				}
+			  
+				try {
+				  const res = await fetch("http://localhost:5000/add-field", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ name, skills: skillNames })  // Send skills!
+				  });
+			  
+				  const result = await res.json();
+				  if (res.ok) {
+					await loadFields(); // Refresh dropdown
+					const options = document.getElementById("field_id").options;
+					for (let opt of options) {
+					  if (opt.textContent === name) opt.selected = true;
+					}
+					modal.style.display = "none";
+				  } else {
+					fieldStatus.textContent = result.error;
+				  }
+				} catch (err) {
+				  fieldStatus.textContent = "Failed to add field.";
+				  console.error(err);
+				}
+			  });
+			  
+			</script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.dropotron.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>

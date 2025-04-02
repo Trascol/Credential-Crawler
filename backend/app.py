@@ -65,6 +65,79 @@ def login():
         conn.close()
 
 
+@app.route("/get-fields", methods=["GET"])
+def get_fields():
+    try:
+        with get_connection().cursor() as cur:
+            cur.execute("SELECT id, name FROM fields ORDER BY name ASC")
+            rows = cur.fetchall()
+        return jsonify([{"id": r[0], "name": r[1]} for r in rows]), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/get-skills", methods=["GET"])
+def get_skills():
+    try:
+        with get_connection().cursor() as cur:
+            cur.execute("SELECT id, name FROM skills ORDER BY name ASC")
+            rows = cur.fetchall()
+        return jsonify([{"id": r[0], "name": r[1]} for r in rows]), 200
+    except Exception as e:
+        print("Error in /get-skills:", e)
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/add-field", methods=["POST"])
+def add_field():
+    data = request.json
+    name = data.get("name")
+    if not name:
+        return jsonify({"error": "Missing field name"}), 400
+
+    try:
+        with get_connection().cursor() as cur:
+            cur.execute("""
+                INSERT INTO fields (name) VALUES (%s)
+                ON CONFLICT (name) DO NOTHING
+            """, (name,))
+            get_connection().commit()
+        return jsonify({"message": "Field added"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/submit-job", methods=["POST"])
+def submit_job():
+    data = request.json
+
+    try:
+        with get_connection().cursor() as cur:
+            cur.execute("""
+                INSERT INTO job_listings (
+                    company_name, state, city, job_title, job_description,
+                    required_qualifications, preferred_qualifications, salary,
+                    benefits, work_setting, application_link, field_id
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                data["CompanyName"],
+                data["CompanyState"],
+                data["CompanyCity"],
+                data["JobTitle"],
+                data["JobDescription"],
+                data["RequiredQualifications"],
+                data.get("PreferredQualifications", ""),
+                data["JobSalary"],
+                data.get("benefits", []),
+                data["worksetting"],
+                data["ApplicationLink"],
+                data["field_id"]
+            ))
+            get_connection().commit()
+
+        return jsonify({"message": "Job listing submitted!"}), 201
+
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({"error": str(e)}), 400
+
 @app.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():

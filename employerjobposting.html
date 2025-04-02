@@ -25,10 +25,10 @@
                         <!-- Main -->
 				<section id="main">
 					<div class="employerjobposting-container">
-      					<form
-        				action=""
-        				method="POST"
-        				class="employerjobposting-left">
+                        <form 
+                            action="/submit-job" 
+                            method="POST" 
+                            class="employerjobposting-left">
         			<div class="employerjobposting-left-title">
           				<h2>Post your jobs!</h2>
         			</div>
@@ -110,6 +110,12 @@
                             placeholder="Job Title"
                             class="employerjobposting-inputs"
                             required/>
+                    <label for="field_id">Job Field:</label>
+                        <select id="field_id" name="field_id" required>
+                            <option value="1">Software Engineer</option>
+                            <option value="2">Data Analyst</option>
+                              <!-- Add more manually for now or dynamically via JS later -->
+                        </select>
                     <label for="JobDescription">Job Description: </label>
                     <textarea name="JobDescription" placeholder="Enter the job description" class="employerjobposting-inputs" required></textarea>
                     <label for="RequiredQualifications">Required Qualifications: </label>
@@ -197,7 +203,46 @@
 
 	</div>
 
-		<!-- Scripts -->
+		    <!-- Scripts -->
+            <script>
+                document.querySelector("form").addEventListener("submit", async function (e) {
+                e.preventDefault(); // prevent default form submission
+                
+                const formData = new FormData(this);
+                const data = {};
+                formData.forEach((value, key) => {
+                    if (key === "benefits[]") {
+                    if (!data["benefits"]) data["benefits"] = [];
+                    data["benefits"].push(value);
+                    } else {
+                    data[key] = value;
+                    }
+                });
+                
+                try {
+                    const res = await fetch("/submit-job", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                    });
+                
+                    const result = await res.json();
+                    if (res.ok) {
+                    alert("Job submitted successfully!");
+                    this.reset();
+                    } else {
+                    alert("Error: " + result.error);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert("An error occurred submitting the job.");
+                }
+                });
+                
+            </script>
+
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.dropotron.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
