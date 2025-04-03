@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Resume Feedback</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    #header p {
+      font-size: 1.2rem;
+    }
+
+    .feedback-container {
+      max-width: 900px;
+      margin: 0.5rem auto;
+      padding: 0 2rem;
+    }
+
+    .feedback-container h2,
+    .feedback-container h3 {
+      color: #fff;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .feedback-container p {
+      color: #e0e0e0;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    .suggested-field-result {
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1.6rem;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    .feedback-columns {
+      display: flex;
+      justify-content: space-between;
+      margin: 2rem auto 0 auto;
+      max-width: 900px;
+    }
+
+    .feedback-column {
+      width: 40%;
+    }
+
+    .feedback-column.skills-missing {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .feedback-column.skills-missing ul {
+      list-style-type: none;
+      margin: 0;
+      padding-left: 0;
+      color: #e0e0e0;
+      font-size: 1.3rem;
+    }
+
+    .feedback-column.skills-missing li,
+    .feedback-column ul li {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .skill-stat-badge {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #ff8c00; 
+  color: white;
+  text-align: center;
+  line-height: 32px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+
+    .skills-found .skill-stat-badge {
+      background-color: #4CAF50;
+    }
+
+    .feedback-column h4 {
+      color: #ff8c00;
+      margin-bottom: 0.5rem;
+      font-size: 1.3rem;
+    }
+
+    .feedback-column ul {
+      list-style-type: none;
+      color: #e0e0e0;
+      font-size: 1.3rem;
+      padding-left: 0;
+    }
+
+    .centered-button {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .orange-button {
+      display: inline-block;
+      background-color: #ff8c00;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body class="no-sidebar is-preload">
+  <div id="page-wrapper">
+
+    <!-- Header -->
+    <section id="header">
+      <div class="container">
+        <h1 id="logo">Resume Feedback</h1>
+        <p>Based on your resume, here’s your suggested career field and skill feedback.</p>
+        <nav id="nav">
+          <ul>
+            <li><a class="icon solid fa-home" href="index.html"><span>Homepage</span></a></li>
+            <li><a class="icon solid fa-user-tie" href="jobseekers.html"><span>Jobseekers</span></a></li>
+            <li><a class="icon solid fa-building" href="employers.html"><span>Employers</span></a></li>
+            <li><a class="icon solid fa-envelope" href="contact.html"><span>Contact Us</span></a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+
+    <!-- Feedback Section -->
+    <section id="main">
+      <div class="feedback-container">
+        <h2>Suggested Field:</h2>
+        <h3 class="suggested-field-result">Web Development</h3>
+
+        <div class="feedback-columns">
+          <div class="feedback-column skills-found">
+            <h4>✅ Skills Found</h4>
+            <ul>
+              <li><span class="skill-stat-badge">80%</span>HTML</li>
+              <li><span class="skill-stat-badge">75%</span>CSS</li>
+              <li><span class="skill-stat-badge">90%</span>JavaScript</li>
+            </ul>
+          </div>
+
+          <div class="feedback-column skills-missing">
+            <h4>⚠️ Skills Missing</h4>
+            <ul>
+              <li><span class="skill-stat-badge">25%</span>React</li>
+              <li><span class="skill-stat-badge">40%</span>TypeScript</li>
+              <li><span class="skill-stat-badge">60%</span>Git</li>
+              <li><span class="skill-stat-badge">72%</span>Flexbox</li>
+              <li><span class="skill-stat-badge">87%</span>Vue</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="centered-button">
+          <a href="jobseekerupload.html" class="orange-button">⬅ Back to Resume Upload</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <section id="footer">
+      <nav id="nav">
+        <ul>
+          <li><a class="icon solid fa-home" href="index.html"><span>Homepage</span></a></li>
+          <li><a class="icon solid fa-user-tie" href="jobseekers.html"><span>Jobseekers</span></a></li>
+          <li><a class="icon solid fa-building" href="employers.html"><span>Employers</span></a></li>
+          <li><a class="icon solid fa-envelope" href="contact.html"><span>Contact Us</span></a></li>
+        </ul>
+      </nav>
+    </section>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.dropotron.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
