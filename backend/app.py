@@ -157,3 +157,55 @@ def protected():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+@app.route("/get-jobs", methods=["GET"])
+def get_jobs():
+    try:
+        conn = get_connection()
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT 
+                    jl.id,
+                    jl.company_name,
+                    jl.state,
+                    jl.city,
+                    jl.job_title,
+                    jl.salary,
+                    jl.job_description,
+                    jl.required_qualifications,
+                    jl.preferred_qualifications,
+                    jl.benefits,
+                    jl.work_setting,
+                    jl.application_link,
+                    jl.posted_at,
+                    f.name AS field_name
+                FROM job_listings jl
+                LEFT JOIN fields f ON jl.field_id = f.id
+                ORDER BY jl.posted_at DESC
+            """)
+            rows = cur.fetchall()
+
+        jobs = []
+        for r in rows:
+            jobs.append({
+                "id": r[0],
+                "company_name": r[1],
+                "state": r[2],
+                "city": r[3],
+                "job_title": r[4],
+                "salary": r[5],
+                "job_description": r[6],
+                "required_qualifications": r[7],
+                "preferred_qualifications": r[8],
+                "benefits": r[9],
+                "work_setting": r[10],
+                "application_link": r[11],
+                "posted_at": r[12],
+                "field_name": r[13],
+            })
+
+        return jsonify(jobs), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        conn.close()
