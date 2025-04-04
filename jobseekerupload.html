@@ -140,7 +140,7 @@
 				skillSelect.innerHTML = "";
 			  
 				try {
-				  const res = await fetch("http://localhost:5000/get-skills");
+				  const res = await fetch("https://credential-crawler-backend.onrender.com//get-skills");
 				  const skills = await res.json();
 			  
 				  skills.forEach(skill => {
@@ -160,7 +160,7 @@
 			  
 				try {
 				  console.log("Fetching fields...");
-				  const res = await fetch("http://localhost:5000/get-fields"); // Make sure this matches your Flask port
+				  const res = await fetch("https://credential-crawler-backend.onrender.com//get-fields"); // Make sure this matches your Flask port
 				  const fields = await res.json();
 				  console.log("Fields received:", fields);
 			  
@@ -211,7 +211,7 @@
 				}
 			  
 				try {
-				  const res = await fetch("http://localhost:5000/add-field", {
+				  const res = await fetch("https://credential-crawler-backend.onrender.com//add-field", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ name, skills: skillNames })  // Send skills!
