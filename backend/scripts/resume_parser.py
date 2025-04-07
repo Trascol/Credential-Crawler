@@ -34,20 +34,18 @@ def extract_name(text):
             return ent.text
     return None
 
-def parse_resume(file_path, file_type="pdf"):
-    if file_type == "pdf":
-        text = extract_text_from_pdf(file_path)
-    elif file_type == "docx":
-        text = extract_text_from_docx(file_path)
-    else:
-        raise ValueError("Unsupported file format")
+def parse_resume(file, file_type="pdf"):
+    if file_type != "pdf":
+        raise ValueError("Only PDF format supported.")
+    
+    text = extract_text(file.stream)
 
     parsed_data = {
         "name": extract_name(text),
         "contact_info": extract_contact_info(text),
         "skills": extract_skills(text)
     }
-    
+
     return parsed_data
 
 if __name__ == "__main__":

@@ -18,10 +18,16 @@
 		  <h3>Add a New Field</h3>
 		  <input type="text" id="newFieldInput" placeholder="e.g., Blockchain Developer" />
 		  
-		  	<label for="fieldSkillSelect">Select skills for this field:</label>
-			<select id="fieldSkillSelect" multiple style="width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 10px;">
-			<!-- Options will be loaded dynamically -->
-			</select>
+			
+
+		  <label for="fieldSkillSelect">Select skills for this field:</label>
+		  <small style="display:block; margin-bottom: 8px; font-size: 0.9em; color: #555;">
+			Hold Ctrl (or Cmd on Mac) to select multiple skills
+		  </small>
+		  <select id="fieldSkillSelect" multiple style="width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 10px;"></select>
+		  
+		  <!-- Preview selected skills -->
+		  <div id="selectedSkillPreview" style="margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px;"></div>
 
 	  
 		  <div style="margin-top:10px;">
@@ -46,6 +52,15 @@
 		align-items: center;
 		justify-content: center;
 	  }
+
+	  #selectedSkillPreview .skill-tag {
+		background-color: #e0e0e0;
+		border-radius: 15px;
+		padding: 5px 12px;
+		font-size: 0.9rem;
+		color: #333;
+	  }
+
 	  </style>
 
 	<body class="no-sidebar is-preload">
@@ -63,9 +78,10 @@
                         <!-- Main -->
 				<section id="main">
 					<div class="jobseekerupload-container">
-      					<form
-        				action=""
+      					<form id="resumeForm"
+        				action="/upload-resume"
         				method="POST"
+						enctype="multipart/form-data"
         				class="jobseekerupload-left">
         			<div class="jobseekerupload-left-title">
           				<h2>Upload And Check Your Resume</h2>
@@ -234,7 +250,48 @@
 				}
 			  });
 			  
+			  document.getElementById("fieldSkillSelect").addEventListener("change", () => {
+				const selected = Array.from(document.getElementById("fieldSkillSelect").selectedOptions);
+				const previewBox = document.getElementById("selectedSkillPreview");
+				previewBox.innerHTML = ""; // Clear previous
+			  
+				selected.forEach(option => {
+				  const tag = document.createElement("div");
+				  tag.className = "skill-tag";
+				  tag.textContent = option.value;
+				  previewBox.appendChild(tag);
+				});
+			  });
+
 			</script>
+
+			<script>
+				document.getElementById("resumeForm").addEventListener("submit", async function (e) {
+					e.preventDefault(); // Prevent default form submission
+				  
+					const form = e.target;
+					const formData = new FormData(form);
+				  
+					try {
+					  const response = await fetch("/upload-resume", {
+						method: "POST",
+						body: formData
+					  });
+				  
+					  const data = await response.json();
+				  
+					  if (response.ok) {
+						localStorage.setItem("resumeFeedback", JSON.stringify(data));
+						window.location.href = "resumefeedback.html";
+					  } else {
+						alert("Error: " + data.error);
+					  }
+					} catch (err) {
+					  console.error("Error submitting form:", err);
+					}
+				  });
+				</script>
+
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.dropotron.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>

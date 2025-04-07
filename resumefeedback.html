@@ -142,8 +142,8 @@
     <!-- Feedback Section -->
     <section id="main">
       <div class="feedback-container">
-        <h2>Suggested Field:</h2>
-        <h3 class="suggested-field-result">Web Development</h3>
+        <h2>Resume Analysis Result</h2>
+        <p id="field-comparison" class="suggested-field-result"></p>        
 
         <div class="feedback-columns">
           <div class="feedback-column skills-found">
@@ -188,6 +188,74 @@
   </div>
 
   <!-- Scripts -->
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const feedback = JSON.parse(localStorage.getItem("resumeFeedback"));
+      
+      const guessed = feedback.guessed_field || "Unknown";
+      const selectedFieldId = feedback.field_id || null;
+
+      // Optionally fetch the selected field name (if not already returned in feedback)
+      let selectedFieldName = feedback.selected_field_name || "Your Selected Field";
+
+      document.getElementById("field-comparison").innerHTML = `
+        <strong>Field You Selected:</strong> ${selectedFieldName}<br>
+        <strong>Best Match Based on Resume:</strong> ${guessed}
+      `;
+
+      if (!feedback) {
+        document.body.innerHTML = "<h2 style='text-align:center;'>No resume feedback data found.</h2>";
+        return;
+      }
+  
+      // Utility to map importance % to HSL color (green → blue)
+      function importanceToColor(importance, maxImportance) {
+        const percentage = Math.min(importance / maxImportance, 1);
+      
+        // Blue (hue=210) → Green (hue=120)
+        const hue = 210 - (percentage * 90);
+        return `hsl(${hue}, 85%, 45%)`; // You can tweak saturation/lightness if needed
+      }
+
+      // Populate Skills Found
+      const skillsFoundContainer = document.querySelector(".skills-found ul");
+      skillsFoundContainer.innerHTML = "";
+
+      feedback.skills_found
+        .sort((a, b) => b.importance - a.importance)
+        .forEach(skill => {
+          const li = document.createElement("li");
+          const color = importanceToColor(skill.importance, feedback.max_importance);
+          li.innerHTML = `
+            <span class="skill-stat-badge" style="background-color:${color};">✔️</span>
+            ${skill.name}
+          `;
+          skillsFoundContainer.appendChild(li);
+        });
+  
+      // Populate Missing Skills
+      const missingSkillsContainer = document.querySelector(".skills-missing ul");
+      missingSkillsContainer.innerHTML = "";
+      feedback.missing_skills.forEach(skill => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="skill-stat-badge">❌</span>${skill}`;
+        missingSkillsContainer.appendChild(li);
+      });
+  
+      // OPTIONAL: Display other resume skills (those not matched to field)
+      if (feedback.other_resume_skills?.length) {
+        const otherSkills = document.createElement("div");
+        otherSkills.style.marginTop = "2rem";
+        otherSkills.innerHTML = `
+          <h3 style="text-align:center;">Other Skills Found</h3>
+          <p style="text-align:center; color: #ddd;">${feedback.other_resume_skills.join(", ")}</p>
+        `;
+        document.querySelector(".feedback-container").appendChild(otherSkills);
+      }
+    });
+    </script>
+
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/jquery.dropotron.min.js"></script>
   <script src="assets/js/browser.min.js"></script>
