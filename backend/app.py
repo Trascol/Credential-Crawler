@@ -200,7 +200,10 @@ def upload_resume():
     except Exception as e:
         print("Error during upload-resume:", e)
         return jsonify({"error": str(e)}), 500
+    finally:
+        conn.close()
 
+        
 @app.route("/submit-job", methods=["POST"])
 def submit_job():
     data = request.json
