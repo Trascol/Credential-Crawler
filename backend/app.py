@@ -300,3 +300,146 @@ def get_jobs():
         return jsonify({"error": str(e)}), 500
     finally:
         conn.close()
+
+@app.route("/add-skill", methods=["POST"])
+def add_skill():
+    data = request.json
+    skill_name = data.get("name")
+    if not skill_name:
+        return jsonify({"error": "Missing skill name"}), 400
+
+    # Normalize the skill name (lowercase + stripped)
+    normalized_skill = skill_name.lower().strip()
+    try:
+        conn = get_connection()
+        with conn:
+            with conn.cursor() as cur:
+                # Try inserting the new skill.
+                cur.execute("""
+                    INSERT INTO skills (name)
+                    VALUES (%s)
+                    ON CONFLICT (name) DO NOTHING
+                    RETURNING id
+                """, (normalized_skill,))
+                result = cur.fetchone()
+
+                # If the skill already exists, retrieve its id.
+                if result:
+                    skill_id = result[0]
+                else:
+                    cur.execute("SELECT id FROM skills WHERE name = %s", (normalized_skill,))
+                    skill_id = cur.fetchone()[0]
+
+        return jsonify({"message": "Skill added", "skill": {"id": skill_id, "name": normalized_skill}}), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        conn.close()
+
+@app.route("/update-field-skills", methods=["POST"])
+def update_field_skills():
+    file = request.files.get("myfile")
+    field_id = request.form.get("field_id")
+    if not file or not field_id:
+        return jsonify({"error": "Missing file or field selection"}), 400
+
+    try:
+        # Parse the resume and get a list/dictionary of skills.
+        resume_data = parse_resume(file, file_type="pdf")
+        # Normalize each skill for consistency
+        resume_skills = set(skill.lower().strip() for skill in resume_data.get("skills", []))
+
+        conn = get_connection()
+        with conn:
+            with conn.cursor() as cur:
+                # Update the popularity counter for the field
+                cur.execute("UPDATE fields SET popularity = popularity + 1 WHERE id = %s", (field_id,))
+
+                # Retrieve all skills that already exist in the skills table as a mapping: normalized name → id
+                cur.execute("SELECT id, name FROM skills")
+                all_skills = {row[1].lower().strip(): row[0] for row in cur.fetchall()}
+
+                # Determine which resume skills are new to the skills table.
+                new_skills = resume_skills - set(all_skills.keys())
+                for skill in new_skills:
+                    cur.execute("""
+                        INSERT INTO skills (name)
+                        VALUES (%s)
+                        ON CONFLICT (name) DO NOTHING
+                        RETURNING id
+                    """, (skill,))
+                    result = cur.fetchone()
+                    if result:
+                        skill_id = result[0]
+                    else:
+                        # If the insert did nothing, select the id of the existing skill.
+                        cur.execute("SELECT id FROM skills WHERE name = %s", (skill,))
+                        skill_id = cur.fetchone()[0]
+                    # Update our mapping with the newly inserted skill.
+                    all_skills[skill] = skill_id
+
+                # Retrieve the skills currently associated with the selected field.
+                cur.execute("""
+                    SELECT s.name, fs.importance
+                    FROM field_skills fs
+                    JOIN skills s ON s.id = fs.skill_id
+                    WHERE fs.field_id = %s
+                    ORDER BY fs.importance DESC
+                """, (field_id,))
+                field_skills_with_importance = [(row[0].lower().strip(), row[1]) for row in cur.fetchall()]
+                field_skill_names = {name for name, _ in field_skills_with_importance}
+
+                # At this point, all resume skills exist in the 'all_skills' mapping.
+                valid_resume_skills = resume_skills
+
+                # Skills from the resume already correlated with the field
+                matched_skills = valid_resume_skills.intersection(field_skill_names)
+                # Skills present in the resume (and the skills table) that are new to the field correlation
+                extra_skills = valid_resume_skills - field_skill_names
+
+                # For each skill that is already associated with the field, bump its importance.
+                for skill in matched_skills:
+                    skill_id = all_skills[skill]
+                    cur.execute("""
+                        UPDATE field_skills
+                        SET importance = importance + 1
+                        WHERE field_id = %s AND skill_id = %s
+                    """, (field_id, skill_id))
+
+                # For each new skill, insert a new record into field_skills with an initial importance of 1.
+                for skill in extra_skills:
+                    skill_id = all_skills[skill]
+                    cur.execute("""
+                        INSERT INTO field_skills (field_id, skill_id, importance)
+                        VALUES (%s, %s, 1)
+                        ON CONFLICT (field_id, skill_id) DO NOTHING
+                    """, (field_id, skill_id))
+
+                # Optionally, refresh the list of updated correlations
+                cur.execute("""
+                    SELECT s.name, fs.importance
+                    FROM field_skills fs
+                    JOIN skills s ON s.id = fs.skill_id
+                    WHERE fs.field_id = %s
+                    ORDER BY fs.importance DESC
+                """, (field_id,))
+                updated_field_skills = [(row[0].lower().strip(), row[1]) for row in cur.fetchall()]
+
+        return jsonify({
+            "message": "Field-skill correlations updated successfully.",
+            "updated_skills": [
+                {"name": name, "importance": imp}
+                for name, imp in updated_field_skills
+                if name in valid_resume_skills
+            ],
+            "new_associations": list(extra_skills),
+            "bumped_skills": list(matched_skills)
+        }), 200
+
+    except Exception as e:
+        print("Error during update-field-skills:", e)
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if conn:
+            conn.close()
