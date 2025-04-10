@@ -1,1 +1,213 @@
-employer resume check
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Batch Evaluate Resumes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2em;
+      background: #f7f7f7;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      background: #fff;
+      padding: 1em;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 2em;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    label {
+      display: block;
+      margin-top: 1em;
+    }
+    input[type="text"], select, input[type="file"] {
+      width: 100%;
+      padding: 0.5em;
+      margin-top: 0.25em;
+    }
+    button {
+      margin-top: 1em;
+      padding: 0.5em 1em;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    /* Two-column layout for results */
+    #resultsContainer {
+      display: none; /* Hidden by default; shown after submission */
+      gap: 1em;
+      margin-top: 2em;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #resumeList {
+      flex: 1;
+      background: #fff;
+      padding: 1em;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow-y: auto;
+      max-height: 500px;
+    }
+    #resumeList ul {
+      list-style: none;
+      padding: 0;
+    }
+    #resumeList li {
+      padding: 0.5em;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+    #resumeList li:hover {
+      background: #f0f8ff;
+    }
+    #resumeDetails {
+      flex: 2;
+      background: #fff;
+      padding: 1em;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow-y: auto;
+      max-height: 500px;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Batch Evaluate Resumes</h1>
+  <!-- Form: Field, Skills, and Resume Upload -->
+  <form id="batchForm" enctype="multipart/form-data">
+    <label for="fieldId">Field ID (optional):</label>
+    <input type="text" id="fieldId" name="fieldId" placeholder="Enter Field ID (e.g., 1)">
+
+    <label for="selectedSkills">Select Skills (optional):</label>
+    <select id="selectedSkills" name="selectedSkills" multiple>
+      <!-- Options will be populated dynamically from the skills DB via /get-skills -->
+    </select>
+    <small>Hold down Ctrl (Windows) or Command (Mac) to select multiple skills.</small>
+
+    <label for="resumeFiles">Upload Resumes (PDF):</label>
+    <input type="file" id="resumeFiles" name="myfiles" accept=".pdf" multiple required>
+
+    <button type="submit">Evaluate Resumes</button>
+  </form>
+
+  <!-- Results: Two-column layout -->
+  <div id="resultsContainer">
+    <!-- Left Column: List of resumes -->
+    <div id="resumeList">
+      <h3>Resumes</h3>
+      <ul id="resumesUl"></ul>
+    </div>
+    <!-- Right Column: Resume details -->
+    <div id="resumeDetails">
+      <h3>Details</h3>
+      <div id="detailsContent">Click on a resume name to view its details.</div>
+    </div>
+  </div>
+
+  <script>
+    const BASE_URL = "https://credential-crawler-backend.onrender.com/"; // Replace with your backend URL if needed
+
+    // Populate the multi-select dropdown with skills from /get-skills endpoint.
+    async function populateSkills() {
+      try {
+        const response = await fetch(`${BASE_URL}/get-skills`);
+        const skills = await response.json();
+        const select = document.getElementById("selectedSkills");
+        skills.forEach(skill => {
+          const option = document.createElement("option");
+          option.value = skill.name; // Assuming the API returns the 'name' field.
+          option.textContent = skill.name;
+          select.appendChild(option);
+        });
+      } catch (err) {
+        console.error("Error fetching skills:", err);
+      }
+    }
+    populateSkills();
+
+    // Handle form submission.
+    document.getElementById("batchForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const fieldId = document.getElementById("fieldId").value;
+      const resumeFiles = document.getElementById("resumeFiles").files;
+      const selectedOptions = Array.from(document.getElementById("selectedSkills").selectedOptions);
+      // Join selected skill names into a comma-separated string.
+      const selectedSkills = selectedOptions.map(opt => opt.value).join(", ");
+
+      const formData = new FormData();
+      formData.append("field_id", fieldId);
+      formData.append("selected_skills", selectedSkills);
+      
+      for (let i = 0; i < resumeFiles.length; i++) {
+        formData.append("myfiles", resumeFiles[i]);
+      }
+      
+      try {
+        const response = await fetch(`${BASE_URL}/batch-evaluate`, {
+          method: "POST",
+          body: formData
+        });
+        const data = await response.json();
+        if (data.error) {
+          alert("Error: " + data.error);
+          return;
+        }
+        // Reveal the results container.
+        document.getElementById("resultsContainer").style.display = "flex";
+        // Render the list of resumes.
+        renderResumeList(data.resumes);
+      } catch (err) {
+        console.error("Error during batch evaluation:", err);
+      }
+    });
+
+    // Render the list of resumes (left column) and set click listeners.
+    function renderResumeList(resumes) {
+      const listElement = document.getElementById("resumesUl");
+      listElement.innerHTML = ""; // Clear any previous entries
+
+      resumes.forEach((resume) => {
+        const listItem = document.createElement("li");
+        listItem.innerText = `${resume.resume_name} (Score: ${resume.score})`;
+        listItem.addEventListener("click", () => {
+          renderResumeDetails(resume);
+        });
+        listElement.appendChild(listItem);
+      });
+    }
+
+    // Render details for the selected resume (right column)
+    function renderResumeDetails(resume) {
+      const detailsDiv = document.getElementById("detailsContent");
+      detailsDiv.innerHTML = `
+        <h4>${resume.resume_name}</h4>
+        <p><strong>Score:</strong> ${resume.score}</p>
+        <p><strong>Matched Skills:</strong></p>
+        <pre>${resume.matched_skills.length ? resume.matched_skills.join(", ") : "None"}</pre>
+        <p><strong>Missing Skills:</strong></p>
+        <pre>${resume.missing_skills.length ? resume.missing_skills.join(", ") : "None"}</pre>
+      `;
+    }
+  </script>
+
+</body>
+</html>

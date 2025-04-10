@@ -443,3 +443,63 @@ def update_field_skills():
     finally:
         if conn:
             conn.close()
+
+@app.route("/batch-evaluate", methods=["POST"])
+def batch_evaluate():
+    # Retrieve multiple resume files and parameters from the form data.
+    resume_files = request.files.getlist("myfiles")
+    field_id = request.form.get("field_id")
+    # The 'selected_skills' field contains comma‐separated skill names.
+    selected_skills_str = request.form.get("selected_skills", "")
+    
+    # We need at least one selection (either a field_id or selected_skills).
+    if not resume_files or (not field_id and not selected_skills_str):
+        return jsonify({"error": "Missing resume files and at least one selection parameter (field_id or skills)"}), 400
+
+    try:
+        required_skills = {}
+        # Retrieve field-based skills if a field is provided.
+        if field_id:
+            conn = get_connection()
+            with conn.cursor() as cur:
+                cur.execute("""
+                    SELECT s.name, fs.importance
+                    FROM field_skills fs
+                    JOIN skills s ON s.id = fs.skill_id
+                    WHERE fs.field_id = %s
+                """, (field_id,))
+                # Create a mapping of the field’s skills (normalized to lowercase).
+                field_skills = {row[0].lower().strip(): row[1] for row in cur.fetchall()}
+            conn.close()
+            required_skills.update(field_skills)
+
+        # Parse manually selected skills (if provided).
+        if selected_skills_str:
+            manual_skills = [skill.strip().lower() for skill in selected_skills_str.split(",") if skill.strip()]
+            for skill in manual_skills:
+                # If not already added, add with a default importance of 1.
+                if skill not in required_skills:
+                    required_skills[skill] = 1
+
+        results = []
+        for file in resume_files:
+            resume_data = parse_resume(file, file_type="pdf")
+            resume_skills = set(skill.lower().strip() for skill in resume_data.get("skills", []))
+            matched_skills = resume_skills.intersection(required_skills.keys())
+            missing_skills = set(required_skills.keys()) - resume_skills
+            score = sum(required_skills[skill] for skill in matched_skills)
+            results.append({
+                "resume_name": file.filename,
+                "matched_skills": list(matched_skills),
+                "missing_skills": list(missing_skills),
+                "score": score
+            })
+
+        # Sort resumes by descending score (most applicable first)
+        results.sort(key=lambda x: x["score"], reverse=True)
+
+        return jsonify({"resumes": results}), 200
+
+    except Exception as e:
+        print("Error in batch_evaluate:", e)
+        return jsonify({"error": str(e)}), 500
