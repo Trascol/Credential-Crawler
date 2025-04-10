@@ -1,37 +1,40 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Batch Evaluate Resumes</title>
+  <meta charset="utf-8" />
+  <title>Check Applicant Resumes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script src="assets/js/loginFunc.js" defer></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 2em;
-      background: #f7f7f7;
+    /* Custom styles for the employer resume evaluation page */
+    .employer-resume-container {
+      padding: 2em 0;
     }
-    h1 {
+    .employer-resume-container h1 {
       text-align: center;
+      margin-bottom: 1em;
     }
-    form {
+    .employer-form {
       background: #fff;
-      padding: 1em;
+      padding: 1.5em;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin-bottom: 2em;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
+      max-width: 600px;
+      margin: 0 auto;
     }
-    label {
+    .employer-form label {
       display: block;
       margin-top: 1em;
     }
-    input[type="text"], select, input[type="file"] {
+    .employer-form input[type="text"],
+    .employer-form select,
+    .employer-form input[type="file"] {
       width: 100%;
       padding: 0.5em;
       margin-top: 0.25em;
     }
-    button {
+    .employer-form button {
       margin-top: 1em;
       padding: 0.5em 1em;
       background: #007bff;
@@ -40,7 +43,7 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    button:hover {
+    .employer-form button:hover {
       background: #0056b3;
     }
     /* Two-column layout for results */
@@ -49,8 +52,7 @@
       gap: 1em;
       margin-top: 2em;
       max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 0 auto;
     }
     #resumeList {
       flex: 1;
@@ -88,44 +90,94 @@
     }
   </style>
 </head>
-<body>
+<body class="no-sidebar is-preload">
+  <div id="page-wrapper">
+    <!-- Header -->
+    <section id="header">
+      <div class="container">
+        <h1 id="logo">Credential Crawler</h1>
+        <div class="logged_in">
+          <span id="user-name"></span>
+          <a href="#" id="logout-btn">Logout</a>
+        </div>
+        <nav id="nav">
+          <ul>
+            <li><a class="icon solid fa-home" style="color: #fff" href="index.html"><span>Home</span></a></li>
+            <li><a class="icon solid fa-user-tie" style="color: #fff" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
+            <li><a class="icon solid fa-building" style="color: #fff" href="jobListings.html"><span>View Job Listings</span></a></li>
+            <li><a class="icon solid fa-building" style="color: #fff" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
+            <li><a class="icon solid fa-building" style="color: #fff" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
+            <li><a class="icon solid fa-envelope" style="color: #fff" href="contact.html"><span>Contact Us</span></a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
 
-  <h1>Batch Evaluate Resumes</h1>
-  <!-- Form: Field, Skills, and Resume Upload -->
-  <form id="batchForm" enctype="multipart/form-data">
-    <label for="fieldId">Field ID (optional):</label>
-    <input type="text" id="fieldId" name="fieldId" placeholder="Enter Field ID (e.g., 1)">
+    <!-- Main Content -->
+    <section id="main" class="employer-resume-container">
+      <div class="container">
+        <h1>Batch Evaluate Resumes</h1>
+        <div class="employer-form">
+          <form id="batchForm" enctype="multipart/form-data">
+            <label for="fieldId">Field ID (optional):</label>
+            <input type="text" id="fieldId" name="fieldId" placeholder="Enter Field ID (e.g., 1)">
 
-    <label for="selectedSkills">Select Skills (optional):</label>
-    <select id="selectedSkills" name="selectedSkills" multiple>
-      <!-- Options will be populated dynamically from the skills DB via /get-skills -->
-    </select>
-    <small>Hold down Ctrl (Windows) or Command (Mac) to select multiple skills.</small>
+            <label for="selectedSkills">Select Skills (optional):</label>
+            <select id="selectedSkills" name="selectedSkills" multiple>
+              <!-- Options will be populated dynamically from the skills database -->
+            </select>
+            <small>Hold down Ctrl (Windows) or Command (Mac) to select multiple skills.</small>
 
-    <label for="resumeFiles">Upload Resumes (PDF):</label>
-    <input type="file" id="resumeFiles" name="myfiles" accept=".pdf" multiple required>
+            <label for="resumeFiles">Upload Resumes (PDF):</label>
+            <input type="file" id="resumeFiles" name="myfiles" accept=".pdf" multiple required>
 
-    <button type="submit">Evaluate Resumes</button>
-  </form>
+            <button type="submit">Evaluate Resumes</button>
+          </form>
+        </div>
 
-  <!-- Results: Two-column layout -->
-  <div id="resultsContainer">
-    <!-- Left Column: List of resumes -->
-    <div id="resumeList">
-      <h3>Resumes</h3>
-      <ul id="resumesUl"></ul>
-    </div>
-    <!-- Right Column: Resume details -->
-    <div id="resumeDetails">
-      <h3>Details</h3>
-      <div id="detailsContent">Click on a resume name to view its details.</div>
-    </div>
+        <!-- Results: Two-column layout -->
+        <div id="resultsContainer">
+          <!-- Left Column: List of resumes -->
+          <div id="resumeList">
+            <h3>Resumes</h3>
+            <ul id="resumesUl"></ul>
+          </div>
+          <!-- Right Column: Resume details -->
+          <div id="resumeDetails">
+            <h3>Details</h3>
+            <div id="detailsContent">Click on a resume name to view its details.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <section id="footer">
+      <nav id="nav">
+        <ul>
+          <li><a class="icon solid fa-home" style="color: #fff" href="index.html"><span>Home</span></a></li>
+          <li><a class="icon solid fa-user-tie" style="color: #fff" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
+          <li><a class="icon solid fa-building" style="color: #fff" href="jobListings.html"><span>View Job Listings</span></a></li>
+          <li><a class="icon solid fa-building" style="color: #fff" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
+          <li><a class="icon solid fa-building" style="color: #fff" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
+          <li><a class="icon solid fa-envelope" style="color: #fff" href="contact.html"><span>Contact Us</span></a></li>
+        </ul>
+      </nav>
+    </section>
   </div>
 
+  <!-- Scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.dropotron.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
   <script>
-    const BASE_URL = "https://credential-crawler-backend.onrender.com/"; // Replace with your backend URL if needed
+    // Base URL for backend API calls (update if necessary)
+    const BASE_URL = "https://credential-crawler-backend.onrender.com/";
 
-    // Populate the multi-select dropdown with skills from /get-skills endpoint.
+    // Populate the skills dropdown dynamically
     async function populateSkills() {
       try {
         const response = await fetch(`${BASE_URL}/get-skills`);
@@ -133,7 +185,7 @@
         const select = document.getElementById("selectedSkills");
         skills.forEach(skill => {
           const option = document.createElement("option");
-          option.value = skill.name; // Assuming the API returns the 'name' field.
+          option.value = skill.name;
           option.textContent = skill.name;
           select.appendChild(option);
         });
@@ -143,24 +195,23 @@
     }
     populateSkills();
 
-    // Handle form submission.
+    // Handle form submission and display evaluation results
     document.getElementById("batchForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const fieldId = document.getElementById("fieldId").value;
       const resumeFiles = document.getElementById("resumeFiles").files;
       const selectedOptions = Array.from(document.getElementById("selectedSkills").selectedOptions);
-      // Join selected skill names into a comma-separated string.
       const selectedSkills = selectedOptions.map(opt => opt.value).join(", ");
 
       const formData = new FormData();
       formData.append("field_id", fieldId);
       formData.append("selected_skills", selectedSkills);
-      
+
       for (let i = 0; i < resumeFiles.length; i++) {
         formData.append("myfiles", resumeFiles[i]);
       }
-      
+
       try {
         const response = await fetch(`${BASE_URL}/batch-evaluate`, {
           method: "POST",
@@ -171,20 +222,18 @@
           alert("Error: " + data.error);
           return;
         }
-        // Reveal the results container.
+        // Reveal the results section and render the resume list
         document.getElementById("resultsContainer").style.display = "flex";
-        // Render the list of resumes.
         renderResumeList(data.resumes);
       } catch (err) {
         console.error("Error during batch evaluation:", err);
       }
     });
 
-    // Render the list of resumes (left column) and set click listeners.
+    // Render the list of resumes
     function renderResumeList(resumes) {
       const listElement = document.getElementById("resumesUl");
-      listElement.innerHTML = ""; // Clear any previous entries
-
+      listElement.innerHTML = "";
       resumes.forEach((resume) => {
         const listItem = document.createElement("li");
         listItem.innerText = `${resume.resume_name} (Score: ${resume.score})`;
@@ -195,7 +244,7 @@
       });
     }
 
-    // Render details for the selected resume (right column)
+    // Render the selected resume's details
     function renderResumeDetails(resume) {
       const detailsDiv = document.getElementById("detailsContent");
       detailsDiv.innerHTML = `
@@ -208,6 +257,5 @@
       `;
     }
   </script>
-
 </body>
 </html>

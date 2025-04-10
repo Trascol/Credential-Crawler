@@ -1,32 +1,31 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
   <title>Add a New Skill</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script src="assets/js/loginFunc.js" defer></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 2em;
-      background: #f7f7f7;
-    }
-    form {
+    /* Custom styles for Add Skill page */
+    .form-container {
       background: #fff;
-      padding: 1em;
+      padding: 1.5em;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       max-width: 400px;
-      margin: auto;
+      margin: 2em auto;
     }
-    label {
+    .form-container label {
       display: block;
       margin-top: 1em;
     }
-    input[type="text"] {
+    .form-container input[type="text"] {
       width: 100%;
       padding: 0.5em;
       margin-top: 0.25em;
     }
-    button {
+    .form-container button {
       margin-top: 1em;
       padding: 0.5em 1em;
       background: #007bff;
@@ -35,7 +34,7 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    button:hover {
+    .form-container button:hover {
       background: #0056b3;
     }
     .response {
@@ -54,28 +53,76 @@
       text-decoration: none;
       color: #007bff;
     }
+
+    #main{
+      min-height: 70vh;
+    }
   </style>
 </head>
-<body>
+<body class="no-sidebar is-preload">
+  <div id="page-wrapper">
+    <!-- Header -->
+    <section id="header">
+      <div class="container">
+        <h1 id="logo">Credential Crawler</h1>
+        <div class="logged_in">
+          <span id="user-name"></span>
+          <a href="#" id="logout-btn">Logout</a>
+        </div>
+        <nav id="nav">
+          <ul>
+            <li><a class="icon solid fa-home" style="color: #fff" href="index.html"><span>Home</span></a></li>
+            <li><a class="icon solid fa-user-tie" style="color: #fff" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
+            <li><a class="icon solid fa-building" style="color: #fff" href="jobListings.html"><span>View Job Listings</span></a></li>
+            <li><a class="icon solid fa-building" style="color: #fff" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
+            <li><a class="icon solid fa-building" style="color: #fff" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
+            <li><a class="icon solid fa-envelope" style="color: #fff" href="contact.html"><span>Contact Us</span></a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
 
-  <h1 style="text-align: center;">Add a New Skill</h1>
-  <form id="addSkillForm">
-    <label for="skillName">Skill Name:</label>
-    <input type="text" id="skillName" name="skillName" required>
-    <button type="submit">Add Skill</button>
-    <div class="response" id="addSkillResponse"></div>
-  </form>
-  <div class="back-link">
-    <a href="index.html">← Back to Home</a>
+    <!-- Main Content -->
+    <section id="main">
+      <div class="container">
+        <h1 style="text-align: center;">Add a New Skill</h1>
+        <div class="form-container">
+          <form id="addSkillForm">
+            <label for="skillName">Skill Name:</label>
+            <input type="text" id="skillName" name="skillName" required>
+            <button type="submit">Add Skill</button>
+            <div class="response" id="addSkillResponse"></div>
+          </form>
+          <div class="back-link">
+            <a href="index.html">← Back to Home</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <section id="footer">
+      <nav id="nav">
+        <ul>
+          <li><a class="icon solid fa-home" style="color: #fff" href="index.html"><span>Home</span></a></li>
+          <li><a class="icon solid fa-user-tie" style="color: #fff" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
+          <li><a class="icon solid fa-building" style="color: #fff" href="jobListings.html"><span>View Job Listings</span></a></li>
+          <li><a class="icon solid fa-building" style="color: #fff" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
+          <li><a class="icon solid fa-building" style="color: #fff" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
+          <li><a class="icon solid fa-envelope" style="color: #fff" href="contact.html"><span>Contact Us</span></a></li>
+        </ul>
+      </nav>
+    </section>
   </div>
-  
+
+  <!-- Scripts -->
   <script>
     // Handle the Add Skill form submission.
     document.getElementById("addSkillForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const skillName = document.getElementById("skillName").value;
 
-      const response = await fetch(`https://credential-crawler-backend.onrender.com//add-skill`, {
+      const response = await fetch("https://credential-crawler-backend.onrender.com/add-skill", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: skillName })
@@ -85,6 +132,11 @@
       document.getElementById("addSkillResponse").innerText = JSON.stringify(result, null, 2);
     });
   </script>
-
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.dropotron.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
