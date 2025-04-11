@@ -3149,3 +3149,9 @@ button.alt:active,
   margin-right: 0.5em;
   color: #ccc;
 }
+
+.logged_in a {
+  color: #00ed64;
+  text-decoration: none;
+  font-weight: bold;
+}
