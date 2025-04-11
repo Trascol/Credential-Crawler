@@ -49,9 +49,10 @@
           				name="CompanyName"
           				placeholder="Company Name"
           				class="employerjobposting-inputs"
+                        style="border-radius: 50px;"
           				required/>
                     <label for="CompanyState">State:</label>
-                        <select id="CompanyState" name="CompanyState" required>
+                        <select id="CompanyState" name="CompanyState" style="border-radius:50px; color:black;" required>
                             <option value="AL">Alabama</option>
                             <option value="AK">Alaska</option>
                             <option value="AZ">Arizona</option>
@@ -109,6 +110,7 @@
                             name="CompanyCity"
                             placeholder="City"
                             class="employerjobposting-inputs"
+                            style="border-radius: 50px;"
                             required/>
                     <label for="JobTitle">Job Title:</label>
                     <input
@@ -116,28 +118,30 @@
                             name="JobTitle"
                             placeholder="Job Title"
                             class="employerjobposting-inputs"
+                            style="border-radius: 50px;"
                             required/>
                     <label for="field_id">Job Field:</label>
-                        <select id="field_id" name="field_id" required>
+                        <select id="field_id" name="field_id" style="border-radius: 50px; color: black;"required>
                             <option value="1">Software Engineer</option>
                             <option value="2">Data Analyst</option>
                               <!-- Add more manually for now or dynamically via JS later -->
                         </select>
                     <label for="JobDescription">Job Description: </label>
-                    <textarea name="JobDescription" placeholder="Enter the job description" class="employerjobposting-inputs" required></textarea>
+                    <textarea name="JobDescription" placeholder="Enter the job description" class="employerjobposting-inputs" style="border-radius: 50px;" required></textarea>
                     <label for="RequiredQualifications">Required Qualifications: </label>
-                    <textarea name="RequiredQualifications" placeholder="Enter the required qualifications" class="employerjobposting-inputs" required></textarea>
+                    <textarea name="RequiredQualifications" placeholder="Enter the required qualifications" class="employerjobposting-inputs" style="border-radius: 50px;" required></textarea>
                     <label for="PreferredQualifications">Preferred Qualifications: </label>
-                    <textarea name="PreferredQualifications" placeholder="Enter the preferred qualifications" class="employerjobposting-inputs"></textarea>
+                    <textarea name="PreferredQualifications" placeholder="Enter the preferred qualifications" class="employerjobposting-inputs" style="border-radius: 50px;" ></textarea>
                     <label for="JobSalary">Salary:</label>
                     <input
                             type="text"
                             name="JobSalary"
                             placeholder="Salary"
                             class="employerjobposting-inputs"
+                            style="border-radius: 50px;" 
                             required/>
                     <label for="benefits">Select job benefits (hold Ctrl or Cmd to select multiple):</label>
-                    <select name="benefits" id="benefits" multiple>
+                    <select name="benefits" id="benefits" style="border-radius: 10px; color:black;" multiple>
                         <option value="401k">401(k) Retirement Plan</option>
                         <option value="health_insurance">Health Insurance</option>
                         <option value="dental_insurance">Dental Insurance</option>
@@ -155,7 +159,7 @@
                         <option value="parental_leave">Parental Leave</option>
                     </select>
                     <label for="worksetting">Choose a work setting:</label>
-                    <select id="worksetting" name="worksetting" required>
+                    <select id="worksetting" name="worksetting" style="border-radius: 50px; color:black" required>
                         <option value="Onsite">Onsite</option>
                         <option value="Remote">Remote</option>
                         <option value="Hybrid">Hybrid</option>
@@ -166,6 +170,7 @@
                             name="ApplicationLink"
                             placeholder="Link to Application"
                             class="employerjobposting-inputs"
+                            style="border-radius: 50px;" 
                             required/>
         			<button type="submit">
           				Submit <img src="./assets/css/images/arrow_icon.png" alt="" />
