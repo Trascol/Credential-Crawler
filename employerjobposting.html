@@ -121,10 +121,8 @@
                             style="border-radius: 50px;"
                             required/>
                     <label for="field_id">Job Field:</label>
-                        <select id="field_id" name="field_id" style="border-radius: 50px; color: black;"required>
-                            <option value="1">Software Engineer</option>
-                            <option value="2">Data Analyst</option>
-                              <!-- Add more manually for now or dynamically via JS later -->
+                        <select id="field_id" name="field_id" style="border-radius: 50px; color: black;" required>
+                            <option value="">-- Select a Field --</option>
                         </select>
                     <label for="JobDescription">Job Description: </label>
                     <textarea name="JobDescription" placeholder="Enter the job description" class="employerjobposting-inputs" style="border-radius: 50px;" required></textarea>
@@ -257,6 +255,28 @@
                 
             </script>
 
+            <script>
+                async function populateFieldsDropdown() {
+                try {
+                    const response = await fetch("https://credential-crawler-backend.onrender.com/get-fields");
+                    const fields = await response.json();
+                    const fieldSelect = document.getElementById("field_id");
+            
+                    fields.forEach(field => {
+                    const option = document.createElement("option");
+                    option.value = field.id;
+                    option.textContent = field.name;
+                    fieldSelect.appendChild(option);
+                    });
+                } catch (err) {
+                    console.error("Error loading fields:", err);
+                }
+                }
+            
+                // Populate on page load
+                document.addEventListener("DOMContentLoaded", populateFieldsDropdown);
+            </script>
+  
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.dropotron.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
