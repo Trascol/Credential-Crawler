@@ -119,8 +119,10 @@
         <h1>Batch Evaluate Resumes</h1>
         <div class="employer-form">
           <form id="batchForm" enctype="multipart/form-data">
-            <label for="fieldId">Field ID (optional):</label>
-            <input type="text" id="fieldId" name="fieldId" style="border-radius:50px;" placeholder="Enter Field ID (e.g., 1)">
+            <label for="fieldId">Select Field:</label>
+            <select id="fieldId" name="fieldId" style="border-radius:10px; color:black;">
+              <!-- Options will be populated dynamically -->
+            </select>
 
             <label for="selectedSkills">Select Skills (optional):</label>
             <select id="selectedSkills" name="selectedSkills" style="border-radius: 10px; color:black;" multiple>
@@ -195,6 +197,29 @@
     }
     populateSkills();
 
+    async function populateFields() {
+      try {
+        const response = await fetch(`${BASE_URL}/get-fields`);
+        const fields = await response.json();
+        const fieldSelect = document.getElementById("fieldId");
+        
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "-- Select a Field --";
+        fieldSelect.appendChild(defaultOption);
+
+        fields.forEach(field => {
+          const option = document.createElement("option");
+          option.value = field.id;
+          option.textContent = field.name;
+          fieldSelect.appendChild(option);
+        });
+      } catch (err) {
+        console.error("Error fetching fields:", err);
+      }
+    }
+    populateFields();
+    
     // Handle form submission and display evaluation results
     document.getElementById("batchForm").addEventListener("submit", async (e) => {
       e.preventDefault();
