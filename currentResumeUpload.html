@@ -7,56 +7,123 @@
   <link rel="stylesheet" href="assets/css/main.css" />
   <script src="assets/js/loginFunc.js" defer></script>
   <style>
-    /* Custom styles for Update Field-Skills page */
-    .form-container {
-      background: #fff;
-      padding: 1.5em;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      max-width: 400px;
-      margin: 2em auto;
+    #main {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 0;
+      min-height: 70vh;
     }
-    .form-container label {
-      display: block;
+
+    .title {
+      text-align: center;
       margin-top: 1em;
+      margin-bottom: 1em;
     }
+
+    .title h2 {
+      font-size: 2.5em;
+      color: #00ed64;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #ccc;
+      font-size: 1.1em;
+      margin-bottom: 1.5em;
+      font-weight: bold;
+    }
+
+    .form-container {
+      max-width: 800px;
+      background-color: #ffffff10;
+      border: 1px solid #00ed64;
+      border-radius: 20px;
+      padding: 3em;
+      width: 90%;
+      margin-bottom: 4em;
+    }
+
+    #updateFieldSkillsForm {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5em;
+      width: 100%;
+    }
+
+    .form-container label {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 0.9em;
+      color: #00ed64;
+      display: block;
+      margin-bottom: 0.5em;
+    }
+
     .form-container input[type="text"],
     .form-container input[type="file"] {
+      border-radius: 50px;
+      padding: 12px;
+      font-size: 1em;
+      color: #000;
       width: 100%;
-      padding: 0.5em;
-      margin-top: 0.25em;
     }
-    .form-container button {
-      margin-top: 1em;
-      padding: 0.5em 1em;
-      background: #007bff;
-      color: white;
+
+    .form-container input[type="file"] {
+      color: inherit;
+      font-size: 1em;
       border: none;
-      border-radius: 4px;
+      background: none;
+      padding: 0;
+    }
+
+    .form-container input[type="file"]::-webkit-file-upload-button {
+      padding: 12px 24px;
+      border-radius: 50px;
+      background: linear-gradient(270deg, #00684a, #00ed64);
+      color: white;
+      font-weight: bold;
+      border: none;
       cursor: pointer;
     }
-    .form-container button:hover {
-      background: #0056b3;
+
+    .form-container button {
+      padding: 12px 24px;
+      border-radius: 50px;
+      background: linear-gradient(270deg, #00684a, #00ed64);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
     }
+
     .response {
       margin-top: 1em;
       font-family: monospace;
       white-space: pre-wrap;
-      background: #eef;
+      background: #ffffff08;
       padding: 1em;
-      border-radius: 4px;
-    }
-    .back-link {
-      text-align: center;
-      margin-top: 1em;
-    }
-    .back-link a {
-      text-decoration: none;
-      color: #007bff;
+      border-radius: 12px;
+      border: 1px solid #00ed64;
+      color: #00ed64;
     }
 
-    #main{
-      min-height: 70vh;
+    .back-link {
+      text-align: center;
+      margin-top: 2em;
+    }
+
+    .back-link a {
+      color: #00ed64;
+      text-decoration: none;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -65,19 +132,18 @@
     <!-- Header -->
     <section id="header">
       <div class="container">
-        <h1 id="logo">Credential Crawler</h1>
         <div class="logged_in">
           <span id="user-name"></span>
           <a href="#" id="logout-btn">Logout</a>
         </div>
         <nav id="nav">
           <ul>
-            <li><a class="icon solid fa-home" style="color: #fff" href="index.html"><span>Home</span></a></li>
-            <li><a class="icon solid fa-user-tie" style="color: #fff" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
-            <li><a class="icon solid fa-building" style="color: #fff" href="jobListings.html"><span>View Job Listings</span></a></li>
-            <li><a class="icon solid fa-building" style="color: #fff" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
-            <li><a class="icon solid fa-building" style="color: #fff" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
-            <li><a class="icon solid fa-envelope" style="color: #fff" href="contact.html"><span>Contact Us</span></a></li>
+            <li><a class="icon solid fa-home" href="index.html"><span>Home</span></a></li>
+            <li><a class="icon solid fa-user-tie" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
+            <li><a class="icon solid fa-building" href="jobListings.html"><span>View Job Listings</span></a></li>
+            <li><a class="icon solid fa-building" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
+            <li><a class="icon solid fa-building" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
+            <li><a class="icon solid fa-envelope" href="contact.html"><span>Contact Us</span></a></li>
           </ul>
         </nav>
       </div>
@@ -85,23 +151,29 @@
 
     <!-- Main Content -->
     <section id="main">
-      <div class="container">
-        <h1 style="text-align: center;">Update Field-Skills from Resume</h1>
-        <div class="form-container">
-          <form id="updateFieldSkillsForm" enctype="multipart/form-data">
+      <div class="title">
+        <h2>Update Field-Skills</h2>
+      </div>
+      <div class="subtitle">
+        <p>Help improve our system by uploading resumes to update field skills</p>
+      </div>
+      <div class="form-container">
+        <form id="updateFieldSkillsForm" enctype="multipart/form-data">
+          <div>
             <label for="fieldId">Field ID:</label>
             <input type="text" id="fieldId" name="fieldId" placeholder="e.g., 1" required>
-            
-            <label for="resumeFile">Upload Resume (PDF):</label>
-            <input type="file" id="resumeFile" name="resumeFile" accept=".pdf" required>
-            
-            <button type="submit">Upload & Update Skills</button>
-            <div class="response" id="updateResponse"></div>
-          </form>
-          <div class="back-link">
-            <a href="index.html">← Back to Home</a>
           </div>
-        </div>
+          
+          <div>
+            <label for="resumeFile">Upload Resume:</label>
+            <input type="file" id="resumeFile" name="resumeFile" accept=".pdf" required>
+          </div>
+          
+          <button type="submit">
+            Upload & Update Skills <img src="./assets/css/images/arrow_icon.png" alt="" />
+          </button>
+          <div class="response" id="updateResponse"></div>
+        </form>
       </div>
     </section>
 
@@ -109,12 +181,12 @@
     <section id="footer">
       <nav id="nav">
         <ul>
-          <li><a class="icon solid fa-home" style="color: #fff" href="index.html"><span>Home</span></a></li>
-          <li><a class="icon solid fa-user-tie" style="color: #fff" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
-          <li><a class="icon solid fa-building" style="color: #fff" href="jobListings.html"><span>View Job Listings</span></a></li>
-          <li><a class="icon solid fa-building" style="color: #fff" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
-          <li><a class="icon solid fa-building" style="color: #fff" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
-          <li><a class="icon solid fa-envelope" style="color: #fff" href="contact.html"><span>Contact Us</span></a></li>
+          <li><a class="icon solid fa-home" href="index.html"><span>Home</span></a></li>
+          <li><a class="icon solid fa-user-tie" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
+          <li><a class="icon solid fa-building" href="jobListings.html"><span>View Job Listings</span></a></li>
+          <li><a class="icon solid fa-building" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
+          <li><a class="icon solid fa-building" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
+          <li><a class="icon solid fa-envelope" href="contact.html"><span>Contact Us</span></a></li>
         </ul>
       </nav>
     </section>
@@ -122,7 +194,6 @@
 
   <!-- Scripts -->
   <script>
-    // Handle the Update Field-Skills form submission.
     document.getElementById("updateFieldSkillsForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -131,16 +202,23 @@
       const resumeFile = document.getElementById("resumeFile").files[0];
 
       formData.append("field_id", fieldId);
-      // The key name "myfile" is used by the backend
       formData.append("myfile", resumeFile);
 
-      const response = await fetch("https://credential-crawler-backend.onrender.com/update-field-skills", {
-        method: "POST",
-        body: formData
-      });
+      try {
+        const response = await fetch("https://credential-crawler-backend.onrender.com/update-field-skills", {
+          method: "POST",
+          body: formData
+        });
 
-      const result = await response.json();
-      document.getElementById("updateResponse").innerText = JSON.stringify(result, null, 2);
+        const result = await response.json();
+        if (response.ok) {
+          document.getElementById("updateResponse").innerText = "Successfully updated field skills!\n\n" + JSON.stringify(result, null, 2);
+        } else {
+          document.getElementById("updateResponse").innerText = "Error: " + JSON.stringify(result, null, 2);
+        }
+      } catch (error) {
+        document.getElementById("updateResponse").innerText = "Error: " + error.message;
+      }
     });
   </script>
   <script src="assets/js/jquery.min.js"></script>
