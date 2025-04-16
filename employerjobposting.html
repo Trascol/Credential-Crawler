@@ -1,378 +1,514 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <!--
 	Strongly Typed by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-	<head>
-		<title>Post a Job</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<script src="assets/js/loginFunc.js" defer></script>
-		<style>
-			#main {
-				display: flex;
-				justify-content: center;
-				flex-direction: column;
-				align-items: center;
-				margin-top: 0;
-				min-height: 70vh;
-			}
+  <head>
+    <title>Post a Job</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <script src="assets/js/loginFunc.js" defer></script>
+    <style>
+      #main {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 0;
+        min-height: 70vh;
+      }
 
-			.employerjobposting-title {
-				text-align: center;
-				margin-top: 1em;
-				margin-bottom: 1em;
-			}
+      .employerjobposting-title {
+        text-align: center;
+        margin-top: 1em;
+        margin-bottom: 1em;
+      }
 
-			.employerjobposting-title h2 {
-				font-size: 2.5em;
-				color: #00ed64;
-				text-transform: uppercase;
-				font-weight: bold;
-			}
+      .employerjobposting-title h2 {
+        font-size: 2.5em;
+        color: #00ed64;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
 
-			.employerjobposting-subtitle {
-				text-align: center;
-				color: #ccc;
-				font-size: 1.1em;
-				margin-bottom: 1.5em;
-				font-weight: bold;
-			}
+      .employerjobposting-subtitle {
+        text-align: center;
+        color: #ccc;
+        font-size: 1.1em;
+        margin-bottom: 1.5em;
+        font-weight: bold;
+      }
 
-			.employerjobposting-container {
-				max-width: 800px;
-				background-color: #ffffff10;
-				border: 1px solid #00ed64;
-				border-radius: 20px;
-				padding: 3em;
-				width: 90%;
-				margin-bottom: 4em;
-			}
+      .employerjobposting-container {
+        max-width: 800px;
+        background-color: #ffffff10;
+        border: 1px solid #00ed64;
+        border-radius: 20px;
+        padding: 3em;
+        width: 90%;
+        margin-bottom: 4em;
+      }
 
-			.employerjobposting-left form {
-				display: flex;
-				flex-direction: column;
-				gap: 1.5em;
-				width: 100%;
-			}
+      .employerjobposting-left form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5em;
+        width: 100%;
+      }
 
-			.employerjobposting-left label {
-				text-transform: uppercase;
-				font-weight: bold;
-				font-size: 0.9em;
-				color: #00ed64;
-				display: block;
-				margin-bottom: 0.5em;
-			}
+      .employerjobposting-left label {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 0.9em;
+        color: #00ed64;
+        display: block;
+        margin-bottom: 0.5em;
+      }
 
-			.employerjobposting-inputs,
-			select,
-			textarea,
-			input{
-				border-radius: 50px !important;
-				padding: 12px !important;
-				font-size: 1em !important;
-				color: #000 !important;
-				width: 500px;
-				background-color: #fff !important;
-			}	
+      .employerjobposting-inputs,
+      select,
+      textarea,
+      #benefits {
+        border-radius: 50px !important;
+        padding: 12px !important;
+        font-size: 1em !important;
+        color: #000 !important;
+        width: 100% !important;
+        background-color: #fff !important;
+        box-sizing: border-box !important;
+      }
 
-			textarea.employerjobposting-inputs {
-				min-height: 120px;
-				border-radius: 20px !important;
-			}
+      textarea.employerjobposting-inputs {
+        min-height: 120px;
+        border-radius: 20px !important;
+      }
 
-			select[multiple] {
-				border-radius: 20px !important;
-			}
+      select[multiple] {
+        border-radius: 20px !important;
+      }
 
-			.employerjobposting-left button {
-				padding: 12px 24px;
-				border-radius: 50px;
-				background: linear-gradient(270deg, #00684a, #00ed64);
-				color: white;
-				border: none;
-				cursor: pointer;
-				font-weight: bold;
-				display: flex;
-				align-items: center;
-				gap: 10px;
-				width: fit-content;
-			}
+      .employerjobposting-left button {
+        padding: 12px 24px;
+        border-radius: 50px;
+        background: linear-gradient(270deg, #00684a, #00ed64);
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: fit-content;
+      }
 
-			.logged_in {
-				position: absolute;
-				top: 1em;
-				right: 1em;
-				display: flex;
-				align-items: center;
-				gap: 1em;
-				color: #fff;
-			}
+      .logged_in {
+        position: absolute;
+        top: 1em;
+        right: 1em;
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        color: #fff;
+      }
 
-			.logged_in a {
-				color: #00ed64;
-				text-decoration: none;
-				font-weight: bold;
-			}
+      .logged_in a {
+        color: #00ed64;
+        text-decoration: none;
+        font-weight: bold;
+      }
 
-			#benefits option {
-				color: #000;
-				padding: 8px;
-			}
+      #benefits option {
+        color: #000;
+        padding: 8px;
+      }
 
-			#benefits option:checked {
-				background: linear-gradient(270deg, #00684a, #00ed64);
-				color: white;
-			}
-		</style>
-	</head>
-	<body class="no-sidebar is-preload">
-		<div id="page-wrapper">
+      #benefits option:checked {
+        background: linear-gradient(270deg, #00684a, #00ed64);
+        color: white;
+      }
+    </style>
+  </head>
+  <body class="no-sidebar is-preload">
+    <div id="page-wrapper">
+      <!-- Header -->
+      <section id="header">
+        <div class="container">
+          <!-- Logo -->
+          <div class="logged_in">
+            <span id="user-name"></span>
+            <a href="#" id="logout-btn">Logout</a>
+          </div>
 
-			<!-- Header -->
-			<section id="header">
-				<div class="container">
+          <!-- Main -->
+          <section id="main">
+            <div class="employerjobposting-title">
+              <h2>Post Your Job</h2>
+            </div>
+            <div class="employerjobposting-subtitle">
+              <p>
+                Create a new job listing and find the perfect candidate for your
+                position
+              </p>
+            </div>
+            <div class="employerjobposting-container">
+              <form id="jobPostingForm" class="employerjobposting-left">
+                <input
+                  type="hidden"
+                  name="access_key"
+                  value="ae51f3ae-3abf-4701-90e1-3f731ccdf36f"
+                />
 
-					<!-- Logo -->
-					<div class="logged_in">
-						<span id="user-name"></span>
-						<a href="#" id="logout-btn">Logout</a>
-					</div>
+                <div>
+                  <label for="CompanyName">Company Name</label>
+                  <input
+                    type="text"
+                    name="CompanyName"
+                    placeholder="Enter your company name"
+                    class="employerjobposting-inputs"
+                    required
+                  />
+                </div>
 
-					<!-- Main -->
-					<section id="main">
-						<div class="employerjobposting-title">
-							<h2>Post Your Job</h2>
-						</div>
-						<div class="employerjobposting-subtitle">
-							<p>Create a new job listing and find the perfect candidate for your position</p>
-						</div>
-						<div class="employerjobposting-container">
-							<form id="jobPostingForm" class="employerjobposting-left">
-								<input type="hidden" name="access_key" value="ae51f3ae-3abf-4701-90e1-3f731ccdf36f"/>
-								
-								<div>
-									<label for="CompanyName">Company Name</label>
-									<input type="text" name="CompanyName" placeholder="Enter your company name" class="employerjobposting-inputs" required/>
-								</div>
+                <div>
+                  <label for="CompanyState">State</label>
+                  <select
+                    id="CompanyState"
+                    name="CompanyState"
+                    class="employerjobposting-inputs"
+                    required
+                  >
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                  </select>
+                </div>
 
-								<div>
-									<label for="CompanyState">State</label>
-									<select id="CompanyState" name="CompanyState" class="employerjobposting-inputs" required>
-										<option value="AL">Alabama</option>
-										<option value="AK">Alaska</option>
-										<option value="AZ">Arizona</option>
-										<option value="AR">Arkansas</option>
-										<option value="CA">California</option>
-										<option value="CO">Colorado</option>
-										<option value="CT">Connecticut</option>
-										<option value="DE">Delaware</option>
-										<option value="FL">Florida</option>
-										<option value="GA">Georgia</option>
-										<option value="HI">Hawaii</option>
-										<option value="ID">Idaho</option>
-										<option value="IL">Illinois</option>
-										<option value="IN">Indiana</option>
-										<option value="IA">Iowa</option>
-										<option value="KS">Kansas</option>
-										<option value="KY">Kentucky</option>
-										<option value="LA">Louisiana</option>
-										<option value="ME">Maine</option>
-										<option value="MD">Maryland</option>
-										<option value="MA">Massachusetts</option>
-										<option value="MI">Michigan</option>
-										<option value="MN">Minnesota</option>
-										<option value="MS">Mississippi</option>
-										<option value="MO">Missouri</option>
-										<option value="MT">Montana</option>
-										<option value="NE">Nebraska</option>
-										<option value="NV">Nevada</option>
-										<option value="NH">New Hampshire</option>
-										<option value="NJ">New Jersey</option>
-										<option value="NM">New Mexico</option>
-										<option value="NY">New York</option>
-										<option value="NC">North Carolina</option>
-										<option value="ND">North Dakota</option>
-										<option value="OH">Ohio</option>
-										<option value="OK">Oklahoma</option>
-										<option value="OR">Oregon</option>
-										<option value="PA">Pennsylvania</option>
-										<option value="RI">Rhode Island</option>
-										<option value="SC">South Carolina</option>
-										<option value="SD">South Dakota</option>
-										<option value="TN">Tennessee</option>
-										<option value="TX">Texas</option>
-										<option value="UT">Utah</option>
-										<option value="VT">Vermont</option>
-										<option value="VA">Virginia</option>
-										<option value="WA">Washington</option>
-										<option value="WV">West Virginia</option>
-										<option value="WI">Wisconsin</option>
-										<option value="WY">Wyoming</option>
-									</select>
-								</div>
+                <div>
+                  <label for="CompanyCity">City</label>
+                  <input
+                    type="text"
+                    name="CompanyCity"
+                    placeholder="Enter city"
+                    class="employerjobposting-inputs"
+                    required
+                  />
+                </div>
 
-								<div>
-									<label for="CompanyCity">City</label>
-									<input type="text" name="CompanyCity" placeholder="Enter city" class="employerjobposting-inputs" required/>
-								</div>
+                <div>
+                  <label for="JobTitle">Job Title</label>
+                  <input
+                    type="text"
+                    name="JobTitle"
+                    placeholder="Enter job title"
+                    class="employerjobposting-inputs"
+                    required
+                  />
+                </div>
 
-								<div>
-									<label for="JobTitle">Job Title</label>
-									<input type="text" name="JobTitle" placeholder="Enter job title" class="employerjobposting-inputs" required/>
-								</div>
+                <div>
+                  <label for="field_id">Job Field</label>
+                  <select
+                    id="field_id"
+                    name="field_id"
+                    class="employerjobposting-inputs"
+                    required
+                  >
+                    <option value="1">Software Engineer</option>
+                    <option value="2">Data Analyst</option>
+                  </select>
+                </div>
 
-								<div>
-									<label for="field_id">Job Field</label>
-									<select id="field_id" name="field_id" class="employerjobposting-inputs" required>
-										<option value="1">Software Engineer</option>
-										<option value="2">Data Analyst</option>
-									</select>
-								</div>
+                <div>
+                  <label for="JobDescription">Job Description</label>
+                  <textarea
+                    name="JobDescription"
+                    placeholder="Enter the job description"
+                    class="employerjobposting-inputs"
+                    required
+                  ></textarea>
+                </div>
 
-								<div>
-									<label for="JobDescription">Job Description</label>
-									<textarea name="JobDescription" placeholder="Enter the job description" class="employerjobposting-inputs" required></textarea>
-								</div>
+                <div>
+                  <label for="RequiredQualifications"
+                    >Required Qualifications</label
+                  >
+                  <textarea
+                    name="RequiredQualifications"
+                    placeholder="Enter the required qualifications"
+                    class="employerjobposting-inputs"
+                    required
+                  ></textarea>
+                </div>
 
-								<div>
-									<label for="RequiredQualifications">Required Qualifications</label>
-									<textarea name="RequiredQualifications" placeholder="Enter the required qualifications" class="employerjobposting-inputs" required></textarea>
-								</div>
+                <div>
+                  <label for="PreferredQualifications"
+                    >Preferred Qualifications</label
+                  >
+                  <textarea
+                    name="PreferredQualifications"
+                    placeholder="Enter the preferred qualifications"
+                    class="employerjobposting-inputs"
+                  ></textarea>
+                </div>
 
-								<div>
-									<label for="PreferredQualifications">Preferred Qualifications</label>
-									<textarea name="PreferredQualifications" placeholder="Enter the preferred qualifications" class="employerjobposting-inputs"></textarea>
-								</div>
+                <div>
+                  <label for="JobSalary">Salary</label>
+                  <input
+                    type="text"
+                    name="JobSalary"
+                    placeholder="Enter salary range"
+                    class="employerjobposting-inputs"
+                    required
+                  />
+                </div>
 
-								<div>
-									<label for="JobSalary">Salary</label>
-									<input type="text" name="JobSalary" placeholder="Enter salary range" class="employerjobposting-inputs" required/>
-								</div>
+                <div>
+                  <label for="benefits"
+                    >Benefits (hold Ctrl/Cmd to select multiple)</label
+                  >
+                  <select
+                    name="benefits"
+                    id="benefits"
+                    multiple
+                    class="employerjobposting-inputs"
+                  >
+                    <option value="401k">401(k) Retirement Plan</option>
+                    <option value="health_insurance">Health Insurance</option>
+                    <option value="dental_insurance">Dental Insurance</option>
+                    <option value="vision_insurance">Vision Insurance</option>
+                    <option value="life_insurance">Life Insurance</option>
+                    <option value="pto">Paid Time Off (PTO)</option>
+                    <option value="sick_leave">Sick Leave</option>
+                    <option value="remote_work">Remote Work Options</option>
+                    <option value="flexible_schedule">Flexible Schedule</option>
+                    <option value="tuition_reimbursement">
+                      Tuition Reimbursement
+                    </option>
+                    <option value="gym_membership">Gym Membership</option>
+                    <option value="stock_options">Stock Options</option>
+                    <option value="commuter_benefits">Commuter Benefits</option>
+                    <option value="childcare_assistance">
+                      Childcare Assistance
+                    </option>
+                    <option value="parental_leave">Parental Leave</option>
+                  </select>
+                </div>
 
-								<div>
-									<label for="benefits">Benefits (hold Ctrl/Cmd to select multiple)</label>
-									<select name="benefits" id="benefits" multiple>
-										<option value="401k">401(k) Retirement Plan</option>
-										<option value="health_insurance">Health Insurance</option>
-										<option value="dental_insurance">Dental Insurance</option>
-										<option value="vision_insurance">Vision Insurance</option>
-										<option value="life_insurance">Life Insurance</option>
-										<option value="pto">Paid Time Off (PTO)</option>
-										<option value="sick_leave">Sick Leave</option>
-										<option value="remote_work">Remote Work Options</option>
-										<option value="flexible_schedule">Flexible Schedule</option>
-										<option value="tuition_reimbursement">Tuition Reimbursement</option>
-										<option value="gym_membership">Gym Membership</option>
-										<option value="stock_options">Stock Options</option>
-										<option value="commuter_benefits">Commuter Benefits</option>
-										<option value="childcare_assistance">Childcare Assistance</option>
-										<option value="parental_leave">Parental Leave</option>
-									</select>
-								</div>
+                <div>
+                  <label for="worksetting">Work Setting</label>
+                  <select
+                    id="worksetting"
+                    name="worksetting"
+                    class="employerjobposting-inputs"
+                    required
+                  >
+                    <option value="Onsite">Onsite</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Hybrid">Hybrid</option>
+                  </select>
+                </div>
 
-								<div>
-									<label for="worksetting">Work Setting</label>
-									<select id="worksetting" name="worksetting" class="employerjobposting-inputs" required>
-										<option value="Onsite">Onsite</option>
-										<option value="Remote">Remote</option>
-										<option value="Hybrid">Hybrid</option>
-									</select>
-								</div>
+                <div>
+                  <label for="ApplicationLink">Application Link</label>
+                  <input
+                    type="text"
+                    name="ApplicationLink"
+                    placeholder="Enter application URL"
+                    class="employerjobposting-inputs"
+                    required
+                  />
+                </div>
 
-								<div>
-									<label for="ApplicationLink">Application Link</label>
-									<input type="text" name="ApplicationLink" placeholder="Enter application URL" class="employerjobposting-inputs" required/>
-								</div>
+                <button type="submit">
+                  Submit Job Posting
+                  <img src="./assets/css/images/arrow_icon.png" alt="" />
+                </button>
+              </form>
+            </div>
+          </section>
 
-								<button type="submit">
-									Submit Job Posting <img src="./assets/css/images/arrow_icon.png" alt="" />
-								</button>
-							</form>
-						</div>
-					</section>
+          <!-- Nav -->
+          <nav id="nav">
+            <ul>
+              <li>
+                <a class="icon solid fa-home" href="index.html"
+                  ><span>Home</span></a
+                >
+              </li>
+              <li>
+                <a class="icon solid fa-user-tie" href="jobseekerupload.html"
+                  ><span>Check Your Resume</span></a
+                >
+              </li>
+              <li>
+                <a class="icon solid fa-building" href="jobListings.html"
+                  ><span>View Job Listings</span></a
+                >
+              </li>
+              <li>
+                <a class="icon solid fa-building" href="employerjobposting.html"
+                  ><span>Add a Job Listing</span></a
+                >
+              </li>
+              <li>
+                <a
+                  class="icon solid fa-building"
+                  href="employerResumeCheck.html"
+                  ><span>Check Applicant Resumes</span></a
+                >
+              </li>
+              <li>
+                <a class="icon solid fa-envelope" href="contact.html"
+                  ><span>Contact Us</span></a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </section>
 
-					<!-- Nav -->
-					<nav id="nav">
-						<ul>
-							<li><a class="icon solid fa-home" href="index.html"><span>Home</span></a></li>
-							<li><a class="icon solid fa-user-tie" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
-							<li><a class="icon solid fa-building" href="jobListings.html"><span>View Job Listings</span></a></li>
-							<li><a class="icon solid fa-building" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
-							<li><a class="icon solid fa-building" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
-							<li><a class="icon solid fa-envelope" href="contact.html"><span>Contact Us</span></a></li>
-						</ul>
-					</nav>
+      <!-- Footer -->
+      <section id="footer">
+        <!-- Nav -->
+        <nav id="nav">
+          <ul>
+            <li>
+              <a class="icon solid fa-home" href="index.html"
+                ><span>Home</span></a
+              >
+            </li>
+            <li>
+              <a class="icon solid fa-user-tie" href="jobseekerupload.html"
+                ><span>Check Your Resume</span></a
+              >
+            </li>
+            <li>
+              <a class="icon solid fa-building" href="jobListings.html"
+                ><span>View Job Listings</span></a
+              >
+            </li>
+            <li>
+              <a class="icon solid fa-building" href="employerjobposting.html"
+                ><span>Add a Job Listing</span></a
+              >
+            </li>
+            <li>
+              <a class="icon solid fa-building" href="employerResumeCheck.html"
+                ><span>Check Applicant Resumes</span></a
+              >
+            </li>
+            <li>
+              <a class="icon solid fa-envelope" href="contact.html"
+                ><span>Contact Us</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+      </section>
+    </div>
 
-				</div>
-			</section>
+    <!-- Scripts -->
+    <script>
+      document
+        .getElementById("jobPostingForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
 
-			<!-- Footer -->
-			<section id="footer">
-				<!-- Nav -->
-				<nav id="nav">
-					<ul>
-						<li><a class="icon solid fa-home" href="index.html"><span>Home</span></a></li>
-						<li><a class="icon solid fa-user-tie" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
-						<li><a class="icon solid fa-building" href="jobListings.html"><span>View Job Listings</span></a></li>
-						<li><a class="icon solid fa-building" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
-						<li><a class="icon solid fa-building" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
-						<li><a class="icon solid fa-envelope" href="contact.html"><span>Contact Us</span></a></li>
-					</ul>
-				</nav>
-			</section>
+          const formData = new FormData(this);
+          const data = {};
+          formData.forEach((value, key) => {
+            if (key === "benefits") {
+              if (!data["benefits"]) data["benefits"] = [];
+              data["benefits"].push(value);
+            } else {
+              data[key] = value;
+            }
+          });
 
-		</div>
+          try {
+            const res = await fetch(
+              "https://credential-crawler-backend.onrender.com/submit-job",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              }
+            );
 
-		<!-- Scripts -->
-		<script>
-			document.getElementById("jobPostingForm").addEventListener("submit", async function (e) {
-				e.preventDefault();
-				
-				const formData = new FormData(this);
-				const data = {};
-				formData.forEach((value, key) => {
-					if (key === "benefits") {
-						if (!data["benefits"]) data["benefits"] = [];
-						data["benefits"].push(value);
-					} else {
-						data[key] = value;
-					}
-				});
-				
-				try {
-					const res = await fetch("https://credential-crawler-backend.onrender.com/submit-job", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify(data),
-					});
-				
-					const result = await res.json();
-					if (res.ok) {
-						alert("Job submitted successfully!");
-						this.reset();
-					} else {
-						alert("Error: " + result.error);
-					}
-				} catch (err) {
-					console.error(err);
-					alert("An error occurred submitting the job.");
-				}
-			});
-		</script>
+            const result = await res.json();
+            if (res.ok) {
+              alert("Job submitted successfully!");
+              this.reset();
+            } else {
+              alert("Error: " + result.error);
+            }
+          } catch (err) {
+            console.error(err);
+            alert("An error occurred submitting the job.");
+          }
+        });
+    </script>
 
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.dropotron.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
-
-	</body>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.dropotron.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
 </html>
