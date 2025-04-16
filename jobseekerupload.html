@@ -1,306 +1,384 @@
 <!DOCTYPE HTML>
-<!--
-	Strongly Typed by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
-	<head>
-		<title>Jobseekers</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<script src="assets/js/loginFunc.js" defer></script>
-	</head>
+<head>
+  <title>Jobseekers</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script src="assets/js/loginFunc.js" defer></script>
+  <style>
+    #main {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 0;
+    }
 
-	<div id="fieldModal" class="modal" style="display:none;">
-		<div class="modal-content" style="background:white;padding:20px;border-radius:10px;max-width:400px;margin:auto;">
-		  <h3>Add a New Field</h3>
-		  <input type="text" id="newFieldInput" placeholder="e.g., Blockchain Developer" />
-		  
-			
+    .jobseekerupload-title {
+      text-align: center;
+      margin-top: 1em;
+      margin-bottom: 1em;
+    }
 
-		  <label for="fieldSkillSelect">Select skills for this field:</label>
-		  <small style="display:block; margin-bottom: 8px; font-size: 0.9em; color: #555;">
-			Hold Ctrl (or Cmd on Mac) to select multiple skills
-		  </small>
-		  <select id="fieldSkillSelect" multiple style="width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 10px;"></select>
-		  
-		  <!-- Preview selected skills -->
-		  <div id="selectedSkillPreview" style="margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px;"></div>
+    .jobseekerupload-title h2 {
+      font-size: 2.5em;
+      color: #00ed64;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
 
-	  
-		  <div style="margin-top:10px;">
-			<button id="confirmAddField">Add</button>
-			<button id="cancelAddField">Cancel</button>
-		  </div>
-		  <p id="fieldStatus"></p>
-		</div>
-	  </div>
-	  
-	  
-	  <style>
-	  .modal {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: rgba(0,0,0,0.5);
-		z-index: 1000;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	  }
+    .jobseekerupload-subtitle {
+      text-align: center;
+      color: #ccc;
+      font-size: 1.1em;
+      margin-bottom: 1.5em;
+      font-weight: bold;
+    }
 
-	  #selectedSkillPreview .skill-tag {
-		background-color: #e0e0e0;
-		border-radius: 15px;
-		padding: 5px 12px;
-		font-size: 0.9rem;
-		color: #333;
-	  }
+    .jobseekerupload-steps {
+      background: #ffffff08;
+      border: 1px solid #00ed64;
+      border-radius: 12px;
+      padding: 1em 2em;
+      margin-bottom: 2em;
+      color: #00ed64;
+      font-size: 0.95em;
+      width: 90%;
+      max-width: 800px;
+    }
 
-	  .logged_in{
-		top: 2%;
-	  }
-	  </style>
+    .jobseekerupload-steps ol {
+      padding-left: 1.2em;
+    }
 
-	<body class="no-sidebar is-preload">
-		<div id="page-wrapper">
+    .jobseekerupload-container {
+      max-width: 800px;
+      background-color: #ffffff10;
+      border: 1px solid #00ed64;
+      border-radius: 20px;
+      padding: 3em;
+      width: 90%;
+      margin-bottom: 4em;
+    }
 
-			<!-- Header -->
-			<section id="header">
-				<div class="container">
+    #resumeForm {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5em;
+      width: 100%;
+    }
 
-					<!-- Logo -->
-					<div class="logged_in">
-						<span id="user-name"></span>
-						<a href="#" id="logout-btn">Logout</a>
-					</div>
-                        <!-- Main -->
-				<section id="main">
-					<div class="jobseekerupload-container">
-      					<form id="resumeForm"
-        				action="/upload-resume"
-        				method="POST"
-						enctype="multipart/form-data"
-        				class="jobseekerupload-left">
-        			<div class="jobseekerupload-left-title">
-          				<h2>Upload And Check Your Resume</h2>
-        			</div>
-        			<input
-          				type="hidden"
-          				name="access_key"
-          				value="ae51f3ae-3abf-4701-90e1-3f731ccdf36f"/>
-                    <label for="field_id">What field are you interested in?</label>
-					<select id="field_id" name="field_id" style="border-radius:50px; color: black;" required>
-					</select>
-					<button type="button" id="addFieldBtn">+ Add New Field</button>
+    #resumeForm select,
+    #resumeForm input[type="file"] {
+      border-radius: 50px;
+      padding: 12px;
+      font-size: 1em;
+      color: #000;
+    }
 
-					<label for="myfile">Select a file:</label>
-                    <input type="file" id="myfile" name="myfile" accept=".pdf" required>
-        			<button type="submit">
-          				Submit <img src="./assets/css/images/arrow_icon.png" alt="" />
-        			</button>
-      				</form>
-    				</div>
-									
-				</section>
-					<!-- Nav -->
-						<nav id="nav">
-							<ul>
-								<li><a class="icon solid fa-home" style="color: #fff" href="index.html"><span>Home</span></a></li>
-								<li><a class="icon solid fa-user-tie" style="color: #fff" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
-								<li><a class="icon solid fa-building" style="color: #fff" href="jobListings.html"><span>View Job Listings</span></a></li>
-								<li><a class="icon solid fa-building" style="color: #fff" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
-								<li><a class="icon solid fa-building" style="color: #fff" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
-								<li><a class="icon solid fa-envelope" style="color: #fff" href="contact.html"><span>Contact Us</span></a></li>
-							</ul>
-						</nav>
+    #resumeForm label {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 0.9em;
+      color: #00ed64;
+      display: block;
+      margin-bottom: 0.5em;
+    }
 
-				</div>
-			</section>
+    #addFieldBtn {
+      width: fit-content;
+      padding: 12px 24px;
+      border-radius: 50px;
+      background: linear-gradient(270deg, #00684a, #00ed64);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 1em;
+    }
+
+    #resumeForm button[type="submit"] {
+      padding: 12px 24px;
+      border-radius: 50px;
+      background: linear-gradient(270deg, #00684a, #00ed64);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 2em;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+    }
+	.modal-content input,
+	.modal-content select,
+	.modal-content textarea {
+  	  color: #000;              
+  	  background-color: #fff;    
+	}
+
+	.modal-content input::placeholder {
+  	  color: #555;              
+	}
 
 
+    #selectedSkillPreview .skill-tag {
+      background: #00ed6420;
+      border: 1px solid #00ed64;
+      border-radius: 20px;
+      padding: 5px 12px;
+      margin: 5px;
+      color: #000;
+    }
+	#resumeForm input[type="file"] {
+  color: inherit;
+  font-size: 1em;
+  border: none;
+  background: none;
+  padding: 0;
+}
 
+#resumeForm input[type="file"]::-webkit-file-upload-button {
+  padding: 12px 24px;
+  border-radius: 50px;
+  background: linear-gradient(270deg, #00684a, #00ed64);
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+  </style>
+</head>
+<body class="no-sidebar is-preload">
+  <div id="page-wrapper">
+    <!-- Header -->
+    <section id="header">
+      <div class="container">
+        <div class="logged_in">
+          <span id="user-name"></span>
+          <a href="#" id="logout-btn">Logout</a>
+        </div>
+        <nav id="nav">
+          <ul>
+            <li><a class="icon solid fa-home" href="index.html"><span>Home</span></a></li>
+            <li><a class="icon solid fa-user-tie" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
+            <li><a class="icon solid fa-building" href="jobListings.html"><span>View Job Listings</span></a></li>
+            <li><a class="icon solid fa-building" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
+            <li><a class="icon solid fa-building" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
+            <li><a class="icon solid fa-envelope" href="contact.html"><span>Contact Us</span></a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
 
-			<!-- Footer -->
-			<section id="footer">
-				<!-- Nav -->
-				<nav id="nav">
-					<ul>
-						<li><a class="icon solid fa-home" style="color: #fff" href="index.html"><span>Home</span></a></li>
-						<li><a class="icon solid fa-user-tie" style="color: #fff" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
-						<li><a class="icon solid fa-building" style="color: #fff" href="jobListings.html"><span>View Job Listings</span></a></li>
-						<li><a class="icon solid fa-building" style="color: #fff" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
-						<li><a class="icon solid fa-building" style="color: #fff" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
-						<li><a class="icon solid fa-envelope" style="color: #fff" href="contact.html"><span>Contact Us</span></a></li>
-					</ul>
-				</nav>
-				
-					</div>
-				</div>
-				<!-- <div id="copyright" class="container">
-					<ul class="links">
-						<li>&copy; Credential Crawler. All rights reserved.</li>
-					</ul>
-				</div> -->
-			</section>
+    <!-- Main -->
+    <section id="main">
+      <div class="jobseekerupload-title">
+        <h2>Upload And Check Your Resume</h2>
+      </div>
+      <div class="jobseekerupload-subtitle">
+        <p>Get feedback on your resume and see what skills you're missing for your target role.</p>
+      </div>
+      <div class="jobseekerupload-steps">
+        <ol>
+          <li><strong>Step 1:</strong> Choose your desired career field.</li>
+          <li><strong>Step 2:</strong> Upload your resume (PDF only).</li>
+          <li><strong>Step 3:</strong> Get instant feedback on strengths and missing skills.</li>
+        </ol>
+      </div>
+      <div class="jobseekerupload-container">
+        <form id="resumeForm" action="/upload-resume" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="access_key" value="ae51f3ae-3abf-4701-90e1-3f731ccdf36f" />
+          <div>
+            <label for="field_id">What field are you interested in?</label>
+            <select id="field_id" name="field_id" required></select>
+            <button type="button" id="addFieldBtn">+ Add New Field</button>
+          </div>
+          <div>
+            <label for="myfile">Select a file:</label>
+            <input type="file" id="myfile" name="myfile" accept=".pdf" required>
+          </div>
+          <div>
+            <button type="submit">
+              Submit <img src="./assets/css/images/arrow_icon.png" alt="" />
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
 
-	</div>
+    <!-- Footer -->
+    <section id="footer">
+      <nav id="nav">
+        <ul>
+          <li><a class="icon solid fa-home" href="index.html"><span>Home</span></a></li>
+          <li><a class="icon solid fa-user-tie" href="jobseekerupload.html"><span>Check Your Resume</span></a></li>
+          <li><a class="icon solid fa-building" href="jobListings.html"><span>View Job Listings</span></a></li>
+          <li><a class="icon solid fa-building" href="employerjobposting.html"><span>Add a Job Listing</span></a></li>
+          <li><a class="icon solid fa-building" href="employerResumeCheck.html"><span>Check Applicant Resumes</span></a></li>
+          <li><a class="icon solid fa-envelope" href="contact.html"><span>Contact Us</span></a></li>
+        </ul>
+      </nav>
+    </section>
+  </div>
 
-		<!-- Scripts -->
+  <!-- Modal -->
+  <div id="fieldModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3>Add a New Field</h3>
+      <input type="text" id="newFieldInput" placeholder="e.g., Blockchain Developer" />
+      <label for="fieldSkillSelect">Select skills for this field:</label>
+      <select id="fieldSkillSelect" multiple style="width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 10px;"></select>
+      <div id="selectedSkillPreview"></div>
+      <div style="margin-top:10px;">
+        <button id="confirmAddField">Add</button>
+        <button id="cancelAddField">Cancel</button>
+      </div>
+      <p id="fieldStatus"></p>
+    </div>
+  </div>
 
-		<script>
+  <!-- Scripts -->
+  <script>
+    async function loadSkills() {
+      const skillSelect = document.getElementById("fieldSkillSelect");
+      skillSelect.innerHTML = "";
+      try {
+        const res = await fetch("https://credential-crawler-backend.onrender.com/get-skills");
+        const skills = await res.json();
+        skills.forEach(skill => {
+          const option = document.createElement("option");
+          option.value = skill.name;
+          option.textContent = skill.name;
+          skillSelect.appendChild(option);
+        });
+      } catch (err) {
+        console.error("Failed to load skills:", err);
+      }
+    }
 
-			async function loadSkills() {
-				const skillSelect = document.getElementById("fieldSkillSelect");
-				skillSelect.innerHTML = "";
-			  
-				try {
-				  const res = await fetch("https://credential-crawler-backend.onrender.com/get-skills");
-				  const skills = await res.json();
-			  
-				  skills.forEach(skill => {
-					const option = document.createElement("option");
-					option.value = skill.name;
-					option.textContent = skill.name;
-					skillSelect.appendChild(option);
-				  });
-				} catch (err) {
-				  console.error("Failed to load skills:", err);
-				}
-			  }
-			
-			async function loadFields() {
-				const fieldSelect = document.getElementById("field_id");
-				fieldSelect.innerHTML = ""; // Clear old options
-			  
-				try {
-				  console.log("Fetching fields...");
-				  const res = await fetch("https://credential-crawler-backend.onrender.com/get-fields"); // Make sure this matches your Flask port
-				  const fields = await res.json();
-				  console.log("Fields received:", fields);
-			  
-				  fields.forEach(field => {
-					const option = document.createElement("option");
-					option.value = field.id;
-					option.textContent = field.name;
-					fieldSelect.appendChild(option);
-				  });
-			  
-				  console.log("Dropdown populated.");
-				} catch (err) {
-				  console.error("Failed to load fields:", err);
-				}
-			  }
-			
-			document.addEventListener("DOMContentLoaded", loadFields);
-			
-			// Add new field modal logic
-			const modal = document.getElementById("fieldModal");
-			const addFieldBtn = document.getElementById("addFieldBtn");
-			const confirmBtn = document.getElementById("confirmAddField");
-			const cancelBtn = document.getElementById("cancelAddField");
-			const newFieldInput = document.getElementById("newFieldInput");
-			const fieldStatus = document.getElementById("fieldStatus");
-			
-			addFieldBtn.addEventListener("click", () => {
-			  modal.style.display = "flex";
-			  newFieldInput.value = "";
-			  fieldStatus.textContent = "";
-			  loadSkills();
-			});
-			
-			cancelBtn.addEventListener("click", () => {
-			  modal.style.display = "none";
-			});
-			
-			confirmBtn.addEventListener("click", async () => {
-				const name = newFieldInput.value.trim();
-			  
-				// Get selected skills
-				const selectedOptions = Array.from(document.getElementById("fieldSkillSelect").selectedOptions);
-				const skillNames = selectedOptions.map(opt => opt.value);
-			  
-				if (!name) {
-				  fieldStatus.textContent = "Please enter a field name.";
-				  return;
-				}
-			  
-				try {
-				  const res = await fetch("https://credential-crawler-backend.onrender.com/add-field", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ name, skills: skillNames })  // Send skills!
-				  });
-			  
-				  const result = await res.json();
-				  if (res.ok) {
-					await loadFields(); // Refresh dropdown
-					const options = document.getElementById("field_id").options;
-					for (let opt of options) {
-					  if (opt.textContent === name) opt.selected = true;
-					}
-					modal.style.display = "none";
-				  } else {
-					fieldStatus.textContent = result.error;
-				  }
-				} catch (err) {
-				  fieldStatus.textContent = "Failed to add field.";
-				  console.error(err);
-				}
-			  });
-			  
-			  document.getElementById("fieldSkillSelect").addEventListener("change", () => {
-				const selected = Array.from(document.getElementById("fieldSkillSelect").selectedOptions);
-				const previewBox = document.getElementById("selectedSkillPreview");
-				previewBox.innerHTML = ""; // Clear previous
-			  
-				selected.forEach(option => {
-				  const tag = document.createElement("div");
-				  tag.className = "skill-tag";
-				  tag.textContent = option.value;
-				  previewBox.appendChild(tag);
-				});
-			  });
+    async function loadFields() {
+      const fieldSelect = document.getElementById("field_id");
+      fieldSelect.innerHTML = "";
+      try {
+        const res = await fetch("https://credential-crawler-backend.onrender.com/get-fields");
+        const fields = await res.json();
+        fields.forEach(field => {
+          const option = document.createElement("option");
+          option.value = field.id;
+          option.textContent = field.name;
+          fieldSelect.appendChild(option);
+        });
+      } catch (err) {
+        console.error("Failed to load fields:", err);
+      }
+    }
 
-			</script>
+    document.addEventListener("DOMContentLoaded", loadFields);
 
-			<script>
-				document.getElementById("resumeForm").addEventListener("submit", async function (e) {
-					e.preventDefault(); // Prevent default form submission
-				  
-					const form = e.target;
-					const formData = new FormData(form);
-				  
-					try {
-					  const response = await fetch("https://credential-crawler-backend.onrender.com//upload-resume", {
-						method: "POST",
-						body: formData
-					  });
-				  
-					  const data = await response.json();
-				  
-					  if (response.ok) {
-						localStorage.setItem("resumeFeedback", JSON.stringify(data));
-						window.location.href = "resumefeedback.html";
-					  } else {
-						alert("Error: " + data.error);
-					  }
-					} catch (err) {
-					  console.error("Error submitting form:", err);
-					}
-				  });
-				</script>
+    const modal = document.getElementById("fieldModal");
+    const addFieldBtn = document.getElementById("addFieldBtn");
+    const confirmBtn = document.getElementById("confirmAddField");
+    const cancelBtn = document.getElementById("cancelAddField");
+    const newFieldInput = document.getElementById("newFieldInput");
+    const fieldStatus = document.getElementById("fieldStatus");
 
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+    addFieldBtn.addEventListener("click", () => {
+      modal.style.display = "flex";
+      newFieldInput.value = "";
+      fieldStatus.textContent = "";
+      loadSkills();
+    });
 
-	</body>
+    cancelBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    confirmBtn.addEventListener("click", async () => {
+      const name = newFieldInput.value.trim();
+      const selectedOptions = Array.from(document.getElementById("fieldSkillSelect").selectedOptions);
+      const skillNames = selectedOptions.map(opt => opt.value);
+      if (!name) {
+        fieldStatus.textContent = "Please enter a field name.";
+        return;
+      }
+      try {
+        const res = await fetch("https://credential-crawler-backend.onrender.com/add-field", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, skills: skillNames })
+        });
+        const result = await res.json();
+        if (res.ok) {
+          await loadFields();
+          const options = document.getElementById("field_id").options;
+          for (let opt of options) {
+            if (opt.textContent === name) opt.selected = true;
+          }
+          modal.style.display = "none";
+        } else {
+          fieldStatus.textContent = result.error;
+        }
+      } catch (err) {
+        fieldStatus.textContent = "Failed to add field.";
+        console.error(err);
+      }
+    });
+
+    document.getElementById("fieldSkillSelect").addEventListener("change", () => {
+      const selected = Array.from(document.getElementById("fieldSkillSelect").selectedOptions);
+      const previewBox = document.getElementById("selectedSkillPreview");
+      previewBox.innerHTML = "";
+      selected.forEach(option => {
+        const tag = document.createElement("div");
+        tag.className = "skill-tag";
+        tag.textContent = option.value;
+        previewBox.appendChild(tag);
+      });
+    });
+
+    document.getElementById("resumeForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      try {
+        const response = await fetch("https://credential-crawler-backend.onrender.com/upload-resume", {
+          method: "POST",
+          body: formData
+        });
+        const data = await response.json();
+        if (response.ok) {
+          localStorage.setItem("resumeFeedback", JSON.stringify(data));
+          window.location.href = "resumefeedback.html";
+        } else {
+          alert("Error: " + data.error);
+        }
+      } catch (err) {
+        console.error("Error submitting form:", err);
+      }
+    });
+  </script>
+</body>
 </html>
