@@ -2373,7 +2373,7 @@ button.alt:active,
   text-decoration: none;
   text-transform: uppercase;
   font-weight: 400;
-  color: #777;
+  color: #fff;
   outline: 0;
   display: block;
 }
@@ -3065,7 +3065,7 @@ button.alt:active,
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 25%;
+  width: 20%;
 }
 
 .logged_in *
