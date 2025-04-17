@@ -88,6 +88,10 @@
       white-space: pre-wrap;
       word-wrap: break-word;
     }
+
+    .smallText{
+      color: black;
+    }
   </style>
 </head>
 <body class="no-sidebar is-preload">
@@ -123,12 +127,13 @@
             <select id="fieldId" name="fieldId" style="border-radius:10px; color:black;">
               <!-- Options will be populated dynamically -->
             </select>
-
             <label for="selectedSkills">Select Skills (optional):</label>
             <select id="selectedSkills" name="selectedSkills" style="border-radius: 10px; color:black;" multiple>
               <!-- Options will be populated dynamically from the skills database -->
             </select>
-            <small>Hold down Ctrl (Windows) or Command (Mac) to select multiple skills.</small>
+            <small class="smallText">Hold down Ctrl (Windows) or Command (Mac) to select multiple skills.</small>
+            <br>
+            <button type="button" class="addSkillsBtn" onclick="window.location.href='addSkills.html'">Add Skills</button>
 
             <label for="resumeFiles">Upload Resumes (PDF):</label>
             <input type="file" id="resumeFiles" name="myfiles" accept=".pdf" multiple required>

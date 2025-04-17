@@ -160,9 +160,12 @@
       <div class="form-container">
         <form id="updateFieldSkillsForm" enctype="multipart/form-data">
           <div>
-            <label for="fieldId">Field ID:</label>
-            <input type="text" id="fieldId" name="fieldId" placeholder="e.g., 1" required>
+            <label for="fieldId">Select Field:</label>
+            <select id="fieldId" name="fieldId" style="border-radius: 50px; color: black;" required>
+              <option value="">-- Select a Field --</option>
+            </select>
           </div>
+          
           
           <div>
             <label for="resumeFile">Upload Resume:</label>
@@ -220,6 +223,26 @@
         document.getElementById("updateResponse").innerText = "Error: " + error.message;
       }
     });
+  </script>
+  <script>
+        async function populateFieldsDropdown() {
+      try {
+        const response = await fetch("https://credential-crawler-backend.onrender.com/get-fields");
+        const fields = await response.json();
+        const fieldSelect = document.getElementById("fieldId");
+
+        fields.forEach(field => {
+          const option = document.createElement("option");
+          option.value = field.id;
+          option.textContent = field.name;
+          fieldSelect.appendChild(option);
+        });
+      } catch (err) {
+        console.error("Error loading fields:", err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", populateFieldsDropdown);
   </script>
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/jquery.dropotron.min.js"></script>
