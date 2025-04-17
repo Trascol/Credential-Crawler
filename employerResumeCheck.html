@@ -16,7 +16,7 @@
       margin-bottom: 1em;
     }
     .employer-form {
-      background: #fff;
+      background: #0e1a1a;
       padding: 1.5em;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -37,61 +37,101 @@
     .employer-form button {
       margin-top: 1em;
       padding: 0.5em 1em;
-      background: #007bff;
+      background: linear-gradient(270deg, #00684a, #00ed64);
       color: white;
       border: none;
       border-radius: 4px;
       cursor: pointer;
     }
     .employer-form button:hover {
-      background: #0056b3;
+      background: #00ed64;
     }
+
     /* Two-column layout for results */
     #resultsContainer {
-      display: none; /* Hidden by default; shown after submission */
-      gap: 1em;
-      margin-top: 2em;
-      max-width: 900px;
-      margin: 0 auto;
+    display: none; /* Hidden by default; shown after submission */
+    gap: 1em;
+    margin-top: 2em;
+    max-width: 1000px;
+    margin: 2em auto;
+    flex-wrap: wrap;
+    justify-content: center;
     }
+
+    #resumeList, #resumeDetails {
+      background-color: #0e1a1a;
+      color: #ffffff;
+      border: 1px solid #00ed64;
+      border-radius: 20px;
+      padding: 2em;
+      box-shadow: 0 0 10px #00ed64;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    /* Resume List styling */
     #resumeList {
       flex: 1;
-      background: #fff;
-      padding: 1em;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      overflow-y: auto;
-      max-height: 500px;
+      min-width: 500px;
+      max-width: 500px;
     }
+
+    #resumeList h3 {
+      color: #00ed64;
+      margin-bottom: 1em;
+      text-align: center;
+    }
+
     #resumeList ul {
       list-style: none;
       padding: 0;
-    }
-    #resumeList li {
-      padding: 0.5em;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-    }
-    #resumeList li:hover {
-      background: #f0f8ff;
-    }
-    #resumeDetails {
-      flex: 2;
-      background: #fff;
-      padding: 1em;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      overflow-y: auto;
-      max-height: 500px;
-    }
-    pre {
-      white-space: pre-wrap;
-      word-wrap: break-word;
+      margin: 0;
     }
 
-    .smallText{
-      color: black;
+    #resumeList li {
+      padding: 0.75em 1em;
+      margin-bottom: 0.5em;
+      background-color: #ffffff10;
+      border: 1px solid #00ed64;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
+
+    #resumeList li:hover {
+      background-color: #00ed6420;
+    }
+
+    /* Resume Details styling */
+    #resumeDetails {
+      flex: 2;
+      min-width: 400px;
+    }
+
+    #resumeDetails h3 {
+      color: #00ed64;
+      text-align: center;
+      margin-bottom: 1em;
+    }
+
+    #detailsContent h4 {
+      color: #00ed64;
+      margin-bottom: 0.5em;
+    }
+
+    #detailsContent pre,
+    #detailsContent p {
+      color: #fff;
+      margin-bottom: 1em;
+      font-size: 0.95em;
+      line-height: 1.4em;
+    }
+
+    .smallText {
+      color: #ccc;
+      font-size: 0.9em;
+    }
+
   </style>
 </head>
 <body class="no-sidebar is-preload">
