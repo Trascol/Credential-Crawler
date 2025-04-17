@@ -12,13 +12,7 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
         <script src="assets/js/loginFunc.js" defer></script>
         <style>
-            .job-card {
-                border: 1px solid #ccc;
-                padding: 1rem;
-                margin: 1rem 0;
-                cursor: pointer;
-                border-radius: 6px;
-            }
+
             .modal {
                 display: none;
                 position: fixed;
@@ -46,6 +40,168 @@
             .logged_in{
 		top: 2%;
 	  }
+      
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: 'Source Sans Pro', sans-serif;
+                background-color: #0c1c24;
+                color: #fff;
+                box-sizing: border-box;
+            }
+            #main {
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 1em;
+            }
+            .joblistings-title {
+                text-align: center;
+                margin-top: -2em !important;
+                margin-bottom: 1em;
+                padding-top: 0.5em;
+                line-height: 1.4;
+            }
+            .joblistings-title h2 {
+                padding: 0.5em 0;
+                line-height: 1.5;
+                display: inline-block;
+            }
+            .joblistings-description {
+                text-align: center;
+                font-weight: bold !important;
+                color: #ffffff !important;
+                font-size: 1.1em;
+                margin-top: -0.5em;
+                margin-bottom: 2em;
+            }
+            .job-listing-container {
+                max-width: 900px;
+                width: 90%;
+                border-radius: 20px;
+                padding: 2em;
+                background-color: #ffffff10;
+                margin-bottom: 4em;
+            }
+            .job-card strong {
+                color: #fff;
+                display: block;
+                margin-bottom: 0.5em;
+            }
+
+            .job-card span {
+                color: #ccc;
+            }
+
+            .modal-content * {
+                color: black !important;
+            }
+
+            #logout-btn {
+                position: absolute;
+                top: 1em;
+                right: 2em;
+                color: #fff;
+                font-weight: bold;
+                text-decoration: underline;
+            }
+
+            .logged_in {
+                position: relative;
+                top: 1em;
+            }
+            .modal-content {
+                position: relative !important; 
+                background: #0b161a;
+                color: #fff;
+                padding: 2em;
+                border-radius: 20px;
+                border: 1px solid #00ed64;
+                box-shadow: 0 0 15px rgba(0, 237, 100, 0.3);
+                max-width: 500px;
+                width: 90%;
+                max-height: 80vh;
+                overflow-y: auto;
+                font-family: inherit;
+                text-align: left;
+            }
+
+            .modal-content h2,
+            .modal-content h3 {
+                color: #00ed64 !important;
+                text-align: center !important;
+                margin-bottom: 1em !important;
+                text-transform: uppercase !important;
+                letter-spacing: 1px !important;
+                font-weight: bold !important;
+            }
+
+            .modal-content p,
+            .modal-content span,
+            .modal-content a {
+                color: #e9fbe9 !important;
+                line-height: 1.8 !important;
+                font-size: 1.05em !important;
+                font-weight: 500 !important;
+            }
+
+            .modal-content strong {
+                color: #ffffff !important;
+                font-weight: 700 !important;
+            }
+
+            .modal-content a {
+                color: #00ed64 !important;
+                text-decoration: underline !important;
+            }
+
+            #close-modal {
+                position: absolute !important;
+                top: 20px !important;
+                right: 20px !important;
+                transform: translate(50%, -50%) !important;
+                font-size: 2rem !important;
+                color: #ff4c4c !important;
+                background: transparent !important;
+                border: none !important;
+                font-weight: bold !important;
+                cursor: pointer !important;
+                z-index: 1001 !important;
+            }
+            .modal-content::-webkit-scrollbar {
+                width: 10px;
+            }
+            .modal-content::-webkit-scrollbar-thumb {
+                background-color: #00ed64;
+                border-radius: 10px;
+            }
+
+            .modal-content::-webkit-scrollbar-track {
+                background-color: #0b161a;
+            }
+            .modal-content {
+                overflow-x: hidden !important;
+            }
+            .job-card {
+                background-color: #ffffff10 !important;
+                border: 1px solid #00ed64 !important;
+                border-radius: 20px !important;
+                padding: 2em !important;
+                margin: 1em auto !important;
+                color: #e9fbe9 !important;
+                transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+                text-align: center !important;
+                position: relative !important;
+                width: 95% !important; 
+                max-width: 800px !important;
+            }
+            .job-card:hover {
+                transform: scale(1.02) !important;
+                box-shadow: 0 0 12px #00ed64, inset 0 0 0 1px #00ed64 !important;
+            }
+</style>
+
         </style>
 	</head>
 
@@ -54,7 +210,7 @@
 		<div id="page-wrapper">
 
 			<!-- Header -->
-			<section id="header" style="min-height: 90vh;">
+			<section id="header">
 				<div class="container">
 
 					<!-- Logo -->
@@ -66,17 +222,23 @@
 				<section id="main">
 
 					<div class="container">
-                        <h1>Job Listings</h1>
+                        <h1 class="joblistings-title"><span>Job Listings</span></h1>
+                        <p class="joblistings-description">
+                          Browse current openings and view details for each job. Click on a listing to see full qualifications and apply.
+                        </p>
                         <div id="job-listings"></div>
-                    </div>
+                      </div>
+                      
                 
                     <!-- Modal -->
                     <div id="job-modal" class="modal">
                         <div class="modal-content" id="modal-content">
-                            <button id="close-modal" style="float:right;">&times;</button>
-                            <div id="job-details"></div>
+                          <button id="close-modal">&times;</button>
+                          <div id="job-details"></div>
                         </div>
-                    </div>
+                      </div>
+                      
+                      
 									
 				</section>
 					<!-- Nav -->
