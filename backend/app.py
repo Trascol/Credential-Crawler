@@ -66,12 +66,12 @@ def login():
         if user and bcrypt.check_password_hash(user[1], password):
             access_token = create_access_token(identity=str(user[0]))
             
-            # # For debugging,.. this is painful
-            # print("Login response data:", {
-            #     "token": access_token,
-            #     "name": user[2],
-            #     "user_id": user[0]
-            # })
+            # For debugging,.. this is painful
+            print("Login response data:", {
+                "token": access_token,
+                "name": user[2],
+                "user_id": user[0]
+            })
             
             return jsonify({"token": access_token, "name": user[2], "user_id": user[0]}), 200
 
