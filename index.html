@@ -156,6 +156,20 @@
 											</p> 
 										</section>
 								</div>
+
+								<div class="col-12">
+									<section id="resume-summary" class="resume-summary-box">
+									<h3><i class="fas fa-file-alt"></i> Your Most Recent Resume</h3>
+									  <p id="resume-field">Loading field...</p>
+									  <p id="resume-skills">Loading skills...</p>
+									  <p>
+										<a href="jobseekerupload.html" class="upload-link">
+										  <i class="fas fa-upload"></i> Upload a new resume! 🦀
+										</a>
+									  </p>
+									</section>
+								  </div>
+
 							</div>
 						</div>
 					</section>
@@ -178,6 +192,32 @@
 					</section>
 
 			</div>
+			<script>
+				document.addEventListener("DOMContentLoaded", async () => {
+				  const user = JSON.parse(localStorage.getItem("user"));
+				  if (!user?.user_id) return;
+			  
+				  try {
+					const res = await fetch(`https://credential-crawler-backend.onrender.com/get-latest-resume/${user.user_id}`);
+					const data = await res.json();
+			  
+					const fieldElem = document.getElementById("resume-field");
+					const skillsElem = document.getElementById("resume-skills");
+			  
+					if (res.ok) {
+					  const skills = data.skills_found.map(s => s.name).join(", ");
+					  fieldElem.innerHTML = `<strong>Most Likely Field:</strong> ${data.guessed_field}`;
+					  skillsElem.innerHTML = `<strong>All Skills Found:</strong> ${skills || 'None found'}`;
+					} else {
+					  fieldElem.innerHTML = `No resume uploaded yet.`;
+					  skillsElem.innerHTML = `<a href="jobseekerupload.html" style="color: #00ed64;">Upload one here</a>.`;
+					}
+				  } catch (err) {
+					console.error("Error fetching resume summary:", err);
+				  }
+				});
+			  </script>
+			  
 		</body>
 	</div>
 

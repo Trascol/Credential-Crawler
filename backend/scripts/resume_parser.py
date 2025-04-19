@@ -6,7 +6,7 @@
 import re
 import spacy
 from pdfminer.high_level import extract_text
-from skill_analysis import find_field, extract_skills
+from skill_analysis import find_field, extract_skills, normalize
 from docx import Document
 
 nlp = spacy.load("en_core_web_sm") # Web assuming
@@ -43,27 +43,8 @@ def parse_resume(file, file_type="pdf"):
     parsed_data = {
         "name": extract_name(text),
         "contact_info": extract_contact_info(text),
-        "skills": extract_skills(text)
+        "skills": extract_skills(text),
+        "raw_text": normalize(text)
     }
 
     return parsed_data
-
-if __name__ == "__main__":
-
-    file_path = "resume.pdf"  # Get users pdf and locally store it maybe? Then delete the actual pdf after its parsed
-    resume_data = parse_resume(file_path, file_type="pdf") # I wanna stick with pdf
-    
-    user_name = resume_data.get("name")
-    user_email = resume_data.get("contact_info", {}).get("email", [])
-    user_phone = resume_data.get("contact_info", {}).get("phone", [])
-    user_skills = resume_data.get("skills")
-    
-    print("\n")
-    print(f"Name: {user_name}")
-    print(f"Email: {user_email}")
-    print(f"Phone number: {user_phone}")
-    print(f"Skills: {user_skills}")
-    
-    assumed_field = find_field(user_skills)
-    
-    print(f"\nMost likely field: {assumed_field}")

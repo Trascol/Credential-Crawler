@@ -6,6 +6,7 @@ import psycopg2
 import os
 import sys
 import tempfile
+from datetime import datetime
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "scripts"))
 
@@ -64,7 +65,15 @@ def login():
 
         if user and bcrypt.check_password_hash(user[1], password):
             access_token = create_access_token(identity=str(user[0]))
-            return jsonify({"token": access_token, "name": user[2]}), 200
+            
+            # # For debugging,.. this is painful
+            # print("Login response data:", {
+            #     "token": access_token,
+            #     "name": user[2],
+            #     "user_id": user[0]
+            # })
+            
+            return jsonify({"token": access_token, "name": user[2], "user_id": user[0]}), 200
 
         return jsonify({"error": "Invalid credentials"}), 401
     except Exception as e:
@@ -121,11 +130,49 @@ def add_field():
     finally:
         conn.close()
 
+@app.route("/get-latest-resume/<int:user_id>", methods=["GET"])
+def get_latest_resume(user_id):
+    try:
+        conn = get_connection()
+        with conn.cursor() as cur:
+            # Get resume
+            cur.execute("SELECT content FROM resumes WHERE user_id = %s", (user_id,))
+            resume_row = cur.fetchone()
+            if not resume_row:
+                return jsonify({"message": "No resume found"}), 404
+
+            # Get skills
+            cur.execute("""
+                SELECT s.name
+                FROM resume_skills rs
+                JOIN skills s ON rs.skill_id = s.id
+                WHERE rs.resume_id = %s
+            """, (user_id,))
+            skills = [{"name": row[0]} for row in cur.fetchall()]
+
+            # Guess field
+            guessed_field = find_field([s["name"] for s in skills])
+
+        return jsonify({
+            "skills_found": skills,
+            "guessed_field": guessed_field
+        }), 200
+
+    except Exception as e:
+        print("Error fetching latest resume:", e)
+        return jsonify({"error": str(e)}), 500
+    finally:
+        conn.close()
+
 @app.route("/upload-resume", methods=["POST"])
 def upload_resume():
     file = request.files.get("myfile")
     field_id = request.form.get("field_id")
 
+    user_id = request.form.get("user_id")
+    if not user_id:
+        return jsonify({"error": "Missing user ID"}), 400
+    
     if not file or not field_id:
         return jsonify({"error": "Missing file or field selection"}), 400
 
@@ -137,6 +184,30 @@ def upload_resume():
         conn = get_connection()
         with conn:
             with conn.cursor() as cur:
+                
+                text = resume_data["raw_text"]  # You'll need to add this return to your `parse_resume()` function
+                parsed_at = datetime.now()
+                
+                try:
+                    # Step 1: Delete old skills associated with this user's resume
+                    cur.execute("DELETE FROM resume_skills WHERE resume_id = %s", (user_id,))
+
+                    # Step 2: Insert or update the resume (resume_id = user_id)
+                    cur.execute("""
+                        INSERT INTO resumes (user_id, content, parsed_at)
+                        VALUES (%s, %s, %s)
+                        ON CONFLICT (user_id) DO UPDATE SET
+                            content = EXCLUDED.content,
+                            parsed_at = EXCLUDED.parsed_at
+                        RETURNING user_id
+                    """, (user_id, text, parsed_at))
+
+                    resume_id = cur.fetchone()[0]
+
+                except Exception as insert_error:
+                    print("Resume insert error:", insert_error)
+
+                
                 # Bump field popularity
                 cur.execute("UPDATE fields SET popularity = popularity + 1 WHERE id = %s", (field_id,))
 
@@ -144,6 +215,20 @@ def upload_resume():
                 cur.execute("SELECT id, name FROM skills")
                 all_skills = {row[1].lower().strip(): row[0] for row in cur.fetchall()}  # name → id
 
+                # Adding skills to resume_skills table
+                for skill in resume_skills:
+                    skill_id = all_skills.get(skill)
+                    if skill_id:
+                        # Insert newly found skills for this resume
+                        for skill in resume_skills:
+                            skill_id = all_skills.get(skill)
+                            if skill_id:
+                                cur.execute("""
+                                    INSERT INTO resume_skills (resume_id, skill_id, confidence)
+                                    VALUES (%s, %s, %s)
+                                    ON CONFLICT (resume_id, skill_id) DO NOTHING
+                                """, (user_id, skill_id, 1.0))
+                
                 # Get the selected field name
                 cur.execute("SELECT name FROM fields WHERE id = %s", (field_id,))
                 selected_field_name = cur.fetchone()[0]
@@ -203,6 +288,67 @@ def upload_resume():
     finally:
         conn.close()
 
+@app.route("/evaluate-resume-against-job/<int:user_id>/<int:job_id>", methods=["GET"])
+def evaluate_resume_against_job(user_id, job_id):
+    try:
+        conn = get_connection()
+        with conn.cursor() as cur:
+            # Get the latest resume for this user
+            cur.execute("SELECT content FROM resumes WHERE user_id = %s", (user_id,))
+            resume = cur.fetchone()
+            if not resume:
+                return jsonify({"error": "No resume found for this user."}), 404
+
+            resume_text = resume[0]
+            resume_data = extract_skills(resume_text)
+            resume_skills = set(skill.lower().strip() for skill in resume_data)
+
+            # Get job details
+            cur.execute("SELECT field_id, job_description FROM job_listings WHERE id = %s", (job_id,))
+            job = cur.fetchone()
+            if not job:
+                return jsonify({"error": "Job listing not found."}), 404
+
+            field_id, job_description = job
+
+            # Get job field name
+            cur.execute("SELECT name FROM fields WHERE id = %s", (field_id,))
+            job_field_name = cur.fetchone()[0]
+
+            # Get all skills for this field
+            cur.execute("""
+                SELECT s.name
+                FROM field_skills fs
+                JOIN skills s ON s.id = fs.skill_id
+                WHERE fs.field_id = %s
+            """, (field_id,))
+            field_skills = set(row[0].lower().strip() for row in cur.fetchall())
+
+            # Extract skills from job_description
+            job_skills = extract_skills(job_description)
+            job_skills = set(skill.lower().strip() for skill in job_skills)
+
+            all_required_skills = field_skills.union(job_skills)
+            matched = resume_skills.intersection(all_required_skills)
+            missing = all_required_skills - resume_skills
+
+            # Placeholder field guessing logic (replace with real function)
+            guessed_field = "Software Engineer"  # TODO: replace with find_field(resume_text)
+            field_match = guessed_field.lower() == job_field_name.lower()
+
+            return jsonify({
+                "matched_skills": list(matched),
+                "missing_skills": list(missing),
+                "resume_field": guessed_field,
+                "job_field": job_field_name,
+                "field_match": field_match
+            }), 200
+
+    except Exception as e:
+        print("Evaluation error:", e)
+        return jsonify({"error": str(e)}), 500
+    finally:
+        conn.close()
         
 @app.route("/submit-job", methods=["POST"])
 def submit_job():

@@ -17,158 +17,82 @@
                 display: none;
                 position: fixed;
                 z-index: 100;
-                left: 0; top: 0;
-                width: 100%; height: 100%;
-                background: rgba(0,0,0,0.6);
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.6);
                 justify-content: center;
                 align-items: center;
-            }
-            .modal-content {
-                background: #fff;
-                padding: 2rem;
-                border-radius: 8px;
-                max-width: 600px;
-                width: 90%;
-                max-height: 80vh;
-                overflow-y: auto;
             }
             
-            .modal-content *{
-                color:black !important;
-            }
-
-            .logged_in{
-		top: 2%;
-	  }
-      
-            body {
-                margin: 0;
-                padding: 0;
-                font-family: 'Source Sans Pro', sans-serif;
-                background-color: #0c1c24;
-                color: #fff;
-                box-sizing: border-box;
-            }
-            #main {
-                display: flex;
-                justify-content: center;
-                flex-direction: column;
-                align-items: center;
-                margin-top: 1em;
-            }
-            .joblistings-title {
-                text-align: center;
-                margin-top: -2em !important;
-                margin-bottom: 1em;
-                padding-top: 0.5em;
-                line-height: 1.4;
-            }
-            .joblistings-title h2 {
-                padding: 0.5em 0;
-                line-height: 1.5;
-                display: inline-block;
-            }
-            .joblistings-description {
-                text-align: center;
-                font-weight: bold !important;
-                color: #ffffff !important;
-                font-size: 1.1em;
-                margin-top: -0.5em;
-                margin-bottom: 2em;
-            }
-            .job-listing-container {
-                max-width: 900px;
-                width: 90%;
-                border-radius: 20px;
-                padding: 2em;
-                background-color: #ffffff10;
-                margin-bottom: 4em;
-            }
-            .job-card strong {
-                color: #fff;
-                display: block;
-                margin-bottom: 0.5em;
-            }
-
-            .job-card span {
-                color: #ccc;
-            }
-
-            .modal-content * {
-                color: black !important;
-            }
-
-            #logout-btn {
-                position: absolute;
-                top: 1em;
-                right: 2em;
-                color: #fff;
-                font-weight: bold;
-                text-decoration: underline;
-            }
-
-            .logged_in {
-                position: relative;
-                top: 1em;
-            }
             .modal-content {
-                position: relative !important; 
+                position: relative;
                 background: #0b161a;
                 color: #fff;
-                padding: 2em;
+                padding: 3em;
                 border-radius: 20px;
-                border: 1px solid #00ed64;
-                box-shadow: 0 0 15px rgba(0, 237, 100, 0.3);
-                max-width: 500px;
-                width: 90%;
-                max-height: 80vh;
+                border: 2px solid #00ed64;
+                box-shadow: 0 0 25px rgba(0, 237, 100, 0.4);
+                max-width: 900px;
+                width: 95%;
+                max-height: 90vh;
                 overflow-y: auto;
+                overflow-x: hidden;
                 font-family: inherit;
                 text-align: left;
+                font-size: 1.1em;
             }
-
+            
+            /* Headings */
             .modal-content h2,
             .modal-content h3 {
-                color: #00ed64 !important;
-                text-align: center !important;
-                margin-bottom: 1em !important;
-                text-transform: uppercase !important;
-                letter-spacing: 1px !important;
-                font-weight: bold !important;
+                color: #00ed64;
+                text-align: center;
+                margin-bottom: 1em;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-weight: bold;
             }
-
+            
+            /* Paragraphs, links, spans */
             .modal-content p,
             .modal-content span,
             .modal-content a {
-                color: #e9fbe9 !important;
-                line-height: 1.8 !important;
-                font-size: 1.05em !important;
-                font-weight: 500 !important;
+                color: #e9fbe9;
+                line-height: 1.8;
+                font-size: 1.05em;
+                font-weight: 500;
             }
-
+            
+            /* Strong tags */
             .modal-content strong {
-                color: #ffffff !important;
-                font-weight: 700 !important;
+                color: #ffffff;
+                font-weight: 700;
             }
-
+            
+            /* Links */
             .modal-content a {
-                color: #00ed64 !important;
-                text-decoration: underline !important;
+                color: #00ed64;
+                text-decoration: underline;
             }
-
+            
+            /* Close Button */
             #close-modal {
-                position: absolute !important;
-                top: 20px !important;
-                right: 20px !important;
-                transform: translate(50%, -50%) !important;
-                font-size: 2rem !important;
-                color: #ff4c4c !important;
-                background: transparent !important;
-                border: none !important;
-                font-weight: bold !important;
-                cursor: pointer !important;
-                z-index: 1001 !important;
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                transform: translate(50%, -50%);
+                font-size: 2rem;
+                color: #ff4c4c;
+                background: transparent;
+                border: none;
+                font-weight: bold;
+                cursor: pointer;
+                z-index: 1001;
             }
+            
+            /* Scrollbar styling */
             .modal-content::-webkit-scrollbar {
                 width: 10px;
             }
@@ -176,30 +100,68 @@
                 background-color: #00ed64;
                 border-radius: 10px;
             }
-
             .modal-content::-webkit-scrollbar-track {
                 background-color: #0b161a;
             }
-            .modal-content {
-                overflow-x: hidden !important;
+            
+            /* Pills for skills */
+            .skill-pill {
+                display: inline-block;
+                background: #00ed64;
+                color: #0b161a;
+                padding: 0.3em 0.6em;
+                margin: 0.3em 0.2em;
+                border-radius: 20px;
+                font-size: 0.9em;
+                font-weight: 600;
             }
+            .skill-pill.missing {
+                background: #ff8080;
+                color: #fff;
+            }
+            
+            /* Job cards */
             .job-card {
-                background-color: #ffffff10 !important;
-                border: 1px solid #00ed64 !important;
-                border-radius: 20px !important;
-                padding: 2em !important;
-                margin: 1em auto !important;
-                color: #e9fbe9 !important;
-                transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-                text-align: center !important;
-                position: relative !important;
-                width: 95% !important; 
-                max-width: 800px !important;
+                background-color: #ffffff10;
+                border: 1px solid #00ed64;
+                border-radius: 20px;
+                padding: 2em;
+                margin: 1em auto;
+                color: #e9fbe9;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                text-align: center;
+                position: relative;
+                width: 95%;
+                max-width: 800px;
+            }
+            .job-card strong {
+                color: #fff;
+                display: block;
+                margin-bottom: 0.5em;
+            }
+            .job-card span {
+                color: #ccc;
             }
             .job-card:hover {
-                transform: scale(1.02) !important;
-                box-shadow: 0 0 12px #00ed64, inset 0 0 0 1px #00ed64 !important;
+                transform: scale(1.02);
+                box-shadow: 0 0 12px #00ed64, inset 0 0 0 1px #00ed64;
             }
+
+            .skill-pill {
+                background: #00ed64;
+                color: black;
+                padding: 4px 10px;
+                border-radius: 20px;
+                margin: 3px;
+                display: inline-block;
+                font-weight: bold;
+            }
+            
+            .skill-pill.missing {
+                background: #ff4c4c;
+                color: white;
+            }
+            
 </style>
 
         </style>
@@ -286,6 +248,42 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
             <script>
+
+                async function checkMatch(jobId) {
+                    const user = JSON.parse(localStorage.getItem("user"));
+                    if (!user?.user_id) return alert("You must be logged in.");
+                
+                    try {
+                        const res = await fetch(`https://credential-crawler-backend.onrender.com/evaluate-resume-against-job/${user.user_id}/${jobId}`);
+                        const result = await res.json();
+                        const output = document.getElementById(`match-result-${jobId}`);
+                        output.style.display = 'block';
+                
+                        if (res.ok) {
+                            const fieldMatchColor = result.field_match ? '#00ed64' : '#ff4c4c';
+                            const fieldMatchText = result.field_match ? '✅ Field Match!' : '❌ Field Mismatch';
+                
+                            output.innerHTML = `
+                                <div class="match-output">
+                                    <strong>Resume’s Most Likely Field:</strong> <span style="color:#00ed64">${result.resume_field}</span><br>
+                                    <strong>Job Listing Field:</strong> <span>${result.job_field}</span><br>
+                                    <strong style="color:${fieldMatchColor};">${fieldMatchText}</strong><br><br>
+                                    
+                                    <strong>Matched Skills:</strong><br>
+                                    ${result.matched_skills.map(skill => `<span class="skill-pill">${skill}</span>`).join(" ") || "<em>None</em>"}<br><br>
+                                    
+                                    <strong>Missing Skills:</strong><br>
+                                    ${result.missing_skills.map(skill => `<span class="skill-pill missing">${skill}</span>`).join(" ") || "<em>None</em>"}
+                                </div>
+                            `;
+                        } else {
+                            output.innerHTML = `<em>${result.error || "Unable to evaluate resume."}</em>`;
+                        }
+                    } catch (err) {
+                        console.error("Match error:", err);
+                    }
+                }
+
                 const listingsDiv = document.getElementById("job-listings");
                 const modal = document.getElementById("job-modal");
                 const jobDetails = document.getElementById("job-details");
@@ -316,6 +314,10 @@
                                     <p><strong>Benefits:</strong> ${job.benefits?.join(", ") || "None"}</p>
                                     <p><strong>Apply Here:</strong> <a href="${job.application_link}" target="_blank">${job.application_link}</a></p>
                                     <p><em>Posted at: ${new Date(job.posted_at).toLocaleString()}</em></p>
+                                    <div style="text-align:center; margin-top: 1.5em;">
+                                    <button onclick="checkMatch(${job.id})" style="margin: 0 auto;">Check My Resume Match</button>
+                                    </div>
+                                    <div id="match-result-${job.id}" class="match-output" style="margin-top:1em;"></div>
                                 `;
                                 modal.style.display = "flex";
                             });
