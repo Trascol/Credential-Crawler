@@ -51,6 +51,7 @@
             });
     
             const result = await response.json();
+            console.log("Login result:", result);
             if (response.ok) {
               console.log("Attempting to save user name, token, and id local");
                 localStorage.setItem('user', JSON.stringify({ name: result.name, token: result.token, user_id: result.user_id }));
