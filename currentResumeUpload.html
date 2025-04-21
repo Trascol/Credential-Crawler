@@ -125,6 +125,29 @@
       text-decoration: none;
       font-weight: bold;
     }
+
+    .response {
+      margin-top: 1em;
+      background: #ffffff10;
+      padding: 1.5em;
+      border-radius: 12px;
+      border: 1px solid #00ed64;
+      color: #00ed64;
+      max-width: 800px;
+      width: 90%;
+    }
+    .response ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .response li {
+      margin-bottom: 0.5em;
+    }
+    .response li strong {
+      display: inline-block;
+      width: 150px;
+    }
   </style>
 </head>
 <body class="no-sidebar is-preload">
@@ -197,51 +220,69 @@
 
   <!-- Scripts -->
   <script>
-    document.getElementById("updateFieldSkillsForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+    // Utility: turn any JSON into nested <ul>
+    function jsonToHtml(obj) {
+      let html = '<ul>';
+      for (const key in obj) {
+        if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+        const val = obj[key];
+        html += '<li><strong>' + key + ':</strong> ';
+        if (val && typeof val === 'object') {
+          html += jsonToHtml(val);
+        } else {
+          html += String(val);
+        }
+        html += '</li>';
+      }
+      html += '</ul>';
+      return html;
+    }
 
-      const formData = new FormData();
-      const fieldId = document.getElementById("fieldId").value;
-      const resumeFile = document.getElementById("resumeFile").files[0];
-
-      formData.append("field_id", fieldId);
-      formData.append("myfile", resumeFile);
-
+    document
+      .getElementById("updateFieldSkillsForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const form = e.currentTarget;
+        const formData = new FormData();
+        formData.append("field_id", form.fieldId.value);
+        formData.append("myfile", form.resumeFile.files[0]);
       try {
-        const response = await fetch("https://credential-crawler-backend.onrender.com/update-field-skills", {
+        const resp = await fetch("https://credential-crawler-backend.onrender.com/update-field-skills", {
           method: "POST",
           body: formData
         });
-
-        const result = await response.json();
-        if (response.ok) {
-          document.getElementById("updateResponse").innerText = "Successfully updated field skills!\n\n" + JSON.stringify(result, null, 2);
+        const result = await resp.json();
+        const container = document.getElementById("updateResponse");
+        if (resp.ok) {
+          container.innerHTML =
+            '<h3>Successfully updated field skills!</h3>' +
+            jsonToHtml(result);
         } else {
-          document.getElementById("updateResponse").innerText = "Error: " + JSON.stringify(result, null, 2);
+          container.innerHTML =
+            '<h3>Error updating skills</h3>' +
+            jsonToHtml(result);
         }
-      } catch (error) {
-        document.getElementById("updateResponse").innerText = "Error: " + error.message;
+      } catch (err) {
+        document.getElementById("updateResponse").innerHTML =
+          '<h3>Network error</h3><p>' + err.message + '</p>';
       }
     });
-  </script>
-  <script>
-        async function populateFieldsDropdown() {
+
+    async function populateFieldsDropdown() {
       try {
         const response = await fetch("https://credential-crawler-backend.onrender.com/get-fields");
         const fields = await response.json();
         const fieldSelect = document.getElementById("fieldId");
-
-        fields.forEach(field => {
-          const option = document.createElement("option");
-          option.value = field.id;
-          option.textContent = field.name;
-          fieldSelect.appendChild(option);
+        fields.forEach(({ id, name }) => {
+          const opt = document.createElement("option");
+          opt.value = id;
+          opt.textContent = name;
+          fieldSelect.appendChild(opt);
         });
       } catch (err) {
         console.error("Error loading fields:", err);
       }
     }
-
     document.addEventListener("DOMContentLoaded", populateFieldsDropdown);
   </script>
   <script src="assets/js/jquery.min.js"></script>
